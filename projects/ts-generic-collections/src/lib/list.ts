@@ -1,7 +1,7 @@
 export interface IList<T> {
     add(item: T) : IList<T>;
     remove(predicate: (item:T) => boolean) : IList<T>;
-    first() : T;
+    first(predicate?: (item: T)=> boolean) : T;
     last() : T;
     singleOrDefault(predicate: (item: T)=> boolean) : T;    
     firstOrDefault(predicate: (item: T)=> boolean) : T;
@@ -47,10 +47,19 @@ export class List<T> implements IList<T> {
         return new List(temp);
     }
 
-    first() : T {
+    first(predicate: (t: T)=> boolean = null) : T {
         if (this.list.length <= 0) {
             return null;
         }
+
+        if (predicate) {
+            let item = this.firstOrDefault(predicate);
+
+            if (!item) {
+                throw "First item does not exist.";
+            }
+        }
+        
         return this.list[0];
     }
     

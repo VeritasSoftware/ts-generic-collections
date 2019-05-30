@@ -11,7 +11,7 @@
 export interface IList<T> {
     add(item: T) : IList<T>;
     remove(predicate: (item:T) => boolean) : IList<T>;
-    first() : T;
+    first(predicate?: (item: T)=> boolean) : T;
     last() : T;
     singleOrDefault(predicate: (item: T)=> boolean) : T;    
     firstOrDefault(predicate: (item: T)=> boolean) : T;
