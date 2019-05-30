@@ -12,7 +12,7 @@ export interface IList<T> {
     groupBy<TGroup>(predicate: (item: T)=>TGroup) : IList<Group<TGroup, T>>;
     union(list: IList<T>) : IList<T>;
     forEach(predicate: (item: T)=> void) : void;
-    length() : number;
+    length: number;
     toArray() : Array<T>;
 }
 
@@ -28,6 +28,10 @@ export class List<T> implements IList<T> {
     add(item: T) : IList<T> {
         this.list.push(item);
         return this;
+    }
+
+    get length(): number {
+        return this.list.length;
     }
 
     remove(predicate: (t:T) => boolean) : List<T> {
@@ -110,11 +114,6 @@ export class List<T> implements IList<T> {
 
     forEach(predicate: (t: T)=> void) : void {
         this.list.forEach(x => predicate(x));
-    }
-
-
-    length() : number {
-        return this.list.length;
     }
 
     toArray() : Array<T> {

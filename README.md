@@ -22,7 +22,7 @@ export interface IList<T> {
     groupBy<TGroup>(predicate: (item: T)=>TGroup) : IList<Group<TGroup, T>>;
     union(list: IList<T>) : IList<T>;
     forEach(predicate: (item: T)=> void) : void;
-    length() : number;
+    length: number;
     toArray() : Array<T>;
 }
 ```

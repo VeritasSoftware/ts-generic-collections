@@ -46,7 +46,7 @@ describe('List', () => {
                                       .where(x => x.pet.sex == Sex.F)
                                       .select(x => x.owner);
 
-    expect(ownersWhoHaveMalePets.length() == 1).toBeTruthy();
+    expect(ownersWhoHaveMalePets.length === 1).toBeTruthy();
     expect(ownersWhoHaveMalePets.toArray()[0].name = "John Doe").toBeTruthy();                      
   });
 
@@ -59,7 +59,7 @@ describe('List', () => {
     //add
     list.add(owner);
 
-    expect(list.toArray().length == 1).toBeTruthy();
+    expect(list.length == 1).toBeTruthy();
   });
 
   it('remove', () => {
@@ -76,7 +76,7 @@ describe('List', () => {
     //remove
     list = list.remove(owner => owner.name.includes('Doe'));
 
-    expect(list.toArray().length == 0).toBeTruthy();
+    expect(list.length === 0).toBeTruthy();
   });
 
   it('singleOrDefault', () => {
@@ -202,14 +202,14 @@ describe('List', () => {
                                .groupBy(x => x.pet.sex)
                                .select(x =>  new OwnersByPetSex(x.group, x.list.select(y => y.owner)));
 
-    expect(ownersByPetSex.toArray().length == 2).toBeTruthy();
+    expect(ownersByPetSex.toArray().length === 2).toBeTruthy();
 
     expect(ownersByPetSex.toArray()[0].sex == Sex.F).toBeTruthy();
-    expect(ownersByPetSex.toArray()[0].owners.length() == 1).toBeTruthy();
+    expect(ownersByPetSex.toArray()[0].owners.length === 1).toBeTruthy();
     expect(ownersByPetSex.toArray()[0].owners.toArray()[0].name == "John Doe").toBeTruthy();
 
     expect(ownersByPetSex.toArray()[1].sex == Sex.M).toBeTruthy();
-    expect(ownersByPetSex.toArray()[1].owners.length() == 1).toBeTruthy();
+    expect(ownersByPetSex.toArray()[1].owners.length == 1).toBeTruthy();
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
   });
   
@@ -254,16 +254,16 @@ describe('List', () => {
 
     debugger;
 
-    expect(ownersByPetSex.toArray().length == 2).toBeTruthy();
+    expect(ownersByPetSex.toArray().length === 2).toBeTruthy();
     
     expect(ownersByPetSex.toArray()[0].type == PetType.Cat).toBeTruthy();
     expect(ownersByPetSex.toArray()[0].sex == Sex.F).toBeTruthy();
-    expect(ownersByPetSex.toArray()[0].owners.length() == 1).toBeTruthy();
+    expect(ownersByPetSex.toArray()[0].owners.length === 1).toBeTruthy();
     expect(ownersByPetSex.toArray()[0].owners.toArray()[0].name == "John Doe").toBeTruthy();
 
     expect(ownersByPetSex.toArray()[1].type == PetType.Dog).toBeTruthy();
     expect(ownersByPetSex.toArray()[1].sex == Sex.M).toBeTruthy();
-    expect(ownersByPetSex.toArray()[1].owners.length() == 1).toBeTruthy();
+    expect(ownersByPetSex.toArray()[1].owners.length === 1).toBeTruthy();
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
   });  
   
@@ -295,7 +295,7 @@ describe('List', () => {
     //union
     let ownersResult = ownersA.union(ownersB);
 
-    expect(ownersResult.toArray().length = 4).toBeTruthy();
+    expect(ownersResult.length === 4).toBeTruthy();
   });  
 });
 
