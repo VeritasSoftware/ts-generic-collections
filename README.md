@@ -113,4 +113,9 @@ class OwnersByPetSex {
 }
 ```
 
+### You can browse more examples of queries below
+
+[Unit Tests](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/list.spec.ts)
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.2.
