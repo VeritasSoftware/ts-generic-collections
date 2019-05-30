@@ -9,19 +9,19 @@
 
 ```typescript
 export interface IList<T> {
-    add(t: T) : IList<T>;
-    remove(predicate: (t:T) => boolean) : IList<T>;
+    add(item: T) : IList<T>;
+    remove(predicate: (item:T) => boolean) : IList<T>;
     first() : T;
     last() : T;
-    singleOrDefault(predicate: (t: T)=> boolean) : T;    
-    firstOrDefault(predicate: (t: T)=> boolean) : T;
-    where(predicate: (t: T)=> boolean) : IList<T>;
-    select<TResult>(predicate: (t: T)=> TResult) : IList<TResult>;
-    join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (t: T)=> TMatch, 
-                                    conditionOuter: (t: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult>;
-    groupBy<TGroup>(predicate: (t: T)=>TGroup) : List<Group<TGroup, T>>;
+    singleOrDefault(predicate: (item: T)=> boolean) : T;    
+    firstOrDefault(predicate: (item: T)=> boolean) : T;
+    where(predicate: (item: T)=> boolean) : IList<T>;
+    select<TResult>(predicate: (item: T)=> TResult) : IList<TResult>;
+    join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (item: T)=> TMatch, 
+                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult>;
+    groupBy<TGroup>(predicate: (item: T)=>TGroup) : List<Group<TGroup, T>>;
     union(list: IList<T>) : IList<T>;
-    forEach(predicate: (t: T)=> void) : void;
+    forEach(predicate: (item: T)=> void) : void;
     length() : number;
     toArray() : Array<T>;
 }
