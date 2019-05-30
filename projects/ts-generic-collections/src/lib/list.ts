@@ -9,7 +9,7 @@ export interface IList<T> {
     select<TResult>(predicate: (item: T)=> TResult) : IList<TResult>;
     join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (item: T)=> TMatch, 
                                     conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult>;
-    groupBy<TGroup>(predicate: (item: T)=>TGroup) : List<Group<TGroup, T>>;
+    groupBy<TGroup>(predicate: (item: T)=>TGroup) : IList<Group<TGroup, T>>;
     union(list: IList<T>) : IList<T>;
     forEach(predicate: (item: T)=> void) : void;
     length() : number;
@@ -18,7 +18,7 @@ export interface IList<T> {
 
 export class List<T> implements IList<T> {
 
-    list: Array<T> = new Array<T>();
+    private list: Array<T> = new Array<T>();
 
     constructor(array: Array<T> = null) {
         if (array)
@@ -134,7 +134,7 @@ export class List<T> implements IList<T> {
         return resultList;
     }
 
-    groupBy<TGroup>(predicate: (t: T)=>TGroup) : List<Group<TGroup, T>> {        
+    groupBy<TGroup>(predicate: (t: T)=>TGroup) : IList<Group<TGroup, T>> {        
         const map = new Map();
         this.list.forEach((item) => {
              const key = predicate(item);
