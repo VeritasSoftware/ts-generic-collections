@@ -32,7 +32,7 @@ export interface IList<T> {
 
 ### You can create queries like below
 
-Below query gets the owners by the sex of the pets.
+Below query gets the owners by the sex of their pets.
 
 ```typescript
     let owners = new List<Owner>();

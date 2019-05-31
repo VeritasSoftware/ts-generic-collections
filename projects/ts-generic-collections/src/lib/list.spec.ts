@@ -12,7 +12,7 @@ describe('List', () => {
 
   });
 
-  it('query', () => {
+  it('where', () => {
     let owners = new List<Owner>();
 
     let owner = new Owner();
@@ -42,12 +42,12 @@ describe('List', () => {
     pets.add(pet);
 
     //Get owners who have Female pets
-    let ownersWhoHaveMalePets = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
-                                      .where(x => x.pet.sex == Sex.F)
-                                      .select(x => x.owner);
+    let ownersWhoHaveFemalePets = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
+                                        .where(x => x.pet.sex == Sex.F)
+                                        .select(x => x.owner);
 
-    expect(ownersWhoHaveMalePets.length === 1).toBeTruthy();
-    expect(ownersWhoHaveMalePets.toArray()[0].name = "John Doe").toBeTruthy();                      
+    expect(ownersWhoHaveFemalePets.length === 1).toBeTruthy();
+    expect(ownersWhoHaveFemalePets.toArray()[0].name = "John Doe").toBeTruthy();                      
   });
 
   it('add', () => {
@@ -213,7 +213,7 @@ describe('List', () => {
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
   });
   
-  it('multiuple groupBy', () => {
+  it('groupBy multiple fields', () => {
     let owners = new List<Owner>();
 
     let owner = new Owner();
@@ -247,21 +247,21 @@ describe('List', () => {
     pets.add(pet);
 
     //groupBy multiple
-    let ownersByPetSex = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
-                               .groupBy(x => [x.pet.sex, x.pet.type])
-                               .select(x =>  new OwnersByPetTypeAndSex(x.groups[1], x.groups[0], x.list.select(x => x.owner)));                               
+    let ownersByPetTypeAndSex = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
+                                      .groupBy(x => [x.pet.sex, x.pet.type])
+                                      .select(x =>  new OwnersByPetTypeAndSex(x.groups[1], x.groups[0], x.list.select(x => x.owner)));                               
 
-    expect(ownersByPetSex.toArray().length === 2).toBeTruthy();
+    expect(ownersByPetTypeAndSex.toArray().length === 2).toBeTruthy();
     
-    expect(ownersByPetSex.toArray()[0].type == PetType.Cat).toBeTruthy();
-    expect(ownersByPetSex.toArray()[0].sex == Sex.F).toBeTruthy();
-    expect(ownersByPetSex.toArray()[0].owners.length === 1).toBeTruthy();
-    expect(ownersByPetSex.toArray()[0].owners.toArray()[0].name == "John Doe").toBeTruthy();
+    expect(ownersByPetTypeAndSex.toArray()[0].type == PetType.Cat).toBeTruthy();
+    expect(ownersByPetTypeAndSex.toArray()[0].sex == Sex.F).toBeTruthy();
+    expect(ownersByPetTypeAndSex.toArray()[0].owners.length === 1).toBeTruthy();
+    expect(ownersByPetTypeAndSex.toArray()[0].owners.toArray()[0].name == "John Doe").toBeTruthy();
 
-    expect(ownersByPetSex.toArray()[1].type == PetType.Dog).toBeTruthy();
-    expect(ownersByPetSex.toArray()[1].sex == Sex.M).toBeTruthy();
-    expect(ownersByPetSex.toArray()[1].owners.length === 1).toBeTruthy();
-    expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
+    expect(ownersByPetTypeAndSex.toArray()[1].type == PetType.Dog).toBeTruthy();
+    expect(ownersByPetTypeAndSex.toArray()[1].sex == Sex.M).toBeTruthy();
+    expect(ownersByPetTypeAndSex.toArray()[1].owners.length === 1).toBeTruthy();
+    expect(ownersByPetTypeAndSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
   });  
   
   it('orderBy', () => {
