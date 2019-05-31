@@ -1,5 +1,5 @@
 # ts-generic-collections
-# TypeScript library provides generic, strongly-typed collections with querying
+# TypeScript library provides generic, strongly-typed, queryable collections
 
 ### The generic collections are:
 
