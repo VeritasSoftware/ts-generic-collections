@@ -66,6 +66,16 @@ Below query gets the owners by the sex of the pets.
     let ownersByPetSex = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
                                .groupBy(x => [x.pet.sex])
                                .select(x =>  new OwnersByPetSex(x.groups[0], x.list.select(x => x.owner)));
+
+    expect(ownersByPetSex.toArray().length === 2).toBeTruthy();
+
+    expect(ownersByPetSex.toArray()[0].sex == Sex.F).toBeTruthy();
+    expect(ownersByPetSex.toArray()[0].owners.length === 1).toBeTruthy();
+    expect(ownersByPetSex.toArray()[0].owners.toArray()[0].name == "John Doe").toBeTruthy();
+
+    expect(ownersByPetSex.toArray()[1].sex == Sex.M).toBeTruthy();
+    expect(ownersByPetSex.toArray()[1].owners.length == 1).toBeTruthy();
+    expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();                               
 ```
 
 Entities for above example are:
