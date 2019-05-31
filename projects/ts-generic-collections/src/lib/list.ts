@@ -165,18 +165,13 @@ export class List<T> implements IList<T> {
         });
         let g = Object.keys(groups).map(function (group) {                
             let a = group.substr(1, group.length - 2);
-            return [a.split(','), groups[group]];
+
+            let grp= new Group<T>(a.split(','), groups[group]);
+
+            return grp;
         });
-        
-        let groupsAll = new List<Group<T>>();
 
-        g.forEach(x => {
-            let group= new Group<T>(x[0], x[1]);
-
-            groupsAll.add(group);
-        });    
-                
-        return groupsAll;
+        return new List<Group<T>>(g);        
     }
 
     union(list: IList<T>) : IList<T> {
