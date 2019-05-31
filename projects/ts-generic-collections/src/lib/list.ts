@@ -11,6 +11,7 @@ export interface IList<T> {
     join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (item: T)=> TMatch, 
                                     conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult>;
     groupBy(predicate: (item: T) => Array<any>) : IList<Group<T>>;
+    orderBy(comparer: IComparer<T>) : IList<T>;
     union(list: IList<T>) : IList<T>;
     forEach(predicate: (item: T)=> void) : void;
     length: number;
@@ -174,11 +175,21 @@ export class List<T> implements IList<T> {
         return new List<Group<T>>(g);        
     }
 
+    orderBy(comparer: IComparer<T>) : IList<T> {
+        let temp = this.list.sort((x,y) => comparer.compare(x, y));
+
+        return new List<T>(temp);
+    }
+
     union(list: IList<T>) : IList<T> {
          list.forEach(x => this.list.push(x));
 
          return this;
     }
+}
+
+export interface IComparer<T> {
+    compare(x:T, y: T) : number;
 }
 
 export interface IGroup<T> {

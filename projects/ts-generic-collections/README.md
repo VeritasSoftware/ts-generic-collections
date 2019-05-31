@@ -21,6 +21,7 @@ export interface IList<T> {
     join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (item: T)=> TMatch, 
                                     conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult>;
     groupBy(predicate: (item: T) => Array<any>) : IList<Group<T>>;
+    orderBy(comparer: IComparer<T>) : IList<T>;
     union(list: IList<T>) : IList<T>;
     forEach(predicate: (item: T)=> void) : void;
     length: number;

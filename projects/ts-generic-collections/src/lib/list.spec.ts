@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IList, List } from './list';
+import { IList, List, IComparer } from './list';
 
 describe('List', () => {
 
@@ -199,7 +199,7 @@ describe('List', () => {
 
     //groupBy
     let ownersByPetSex = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
-                               .groupBy(x => [x.pet.sex])
+                               .groupBy(x => [x.pet.sex])                               
                                .select(x =>  new OwnersByPetSex(x.groups[0], x.list.select(x => x.owner)));
 
     expect(ownersByPetSex.toArray().length === 2).toBeTruthy();
@@ -251,8 +251,6 @@ describe('List', () => {
                                .groupBy(x => [x.pet.sex, x.pet.type])
                                .select(x =>  new OwnersByPetTypeAndSex(x.groups[1], x.groups[0], x.list.select(x => x.owner)));                               
 
-    debugger;
-
     expect(ownersByPetSex.toArray().length === 2).toBeTruthy();
     
     expect(ownersByPetSex.toArray()[0].type == PetType.Cat).toBeTruthy();
@@ -266,6 +264,62 @@ describe('List', () => {
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
   });  
   
+  it('orderBy', () => {
+    let owners = new List<Owner>();
+
+    let owner = new Owner();
+    owner.id = 1;
+    owner.name = "John Doe";
+    owners.add(owner);
+
+    owner = new Owner();
+    owner.id = 2;
+    owner.name = "Jane Doe";
+    owners.add(owner);    
+
+    let pets = new List<Pet>();
+
+    let pet = new Pet();
+    pet.ownerId = 2;
+    pet.name = "Sam";
+
+    pets.add(pet);
+
+    pet = new Pet();
+    pet.ownerId = 2;
+    pet.name = "Abby";
+
+    pets.add(pet);
+
+    pet = new Pet();
+    pet.ownerId = 1;
+    pet.name = "Jason";
+
+    pets.add(pet);
+
+    pet = new Pet();
+    pet.ownerId = 1;
+    pet.name = "Bob";
+
+    pets.add(pet);
+
+    //orderBy
+    let ownerPets = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
+                          .orderBy(new Comparer());                          
+
+    expect(ownerPets.toArray()[0].owner.id == 1).toBeTruthy();
+    expect(ownerPets.toArray()[0].pet.name == "Bob").toBeTruthy();
+
+    expect(ownerPets.toArray()[1].owner.id == 1).toBeTruthy();
+    expect(ownerPets.toArray()[1].pet.name == "Jason").toBeTruthy();
+
+    expect(ownerPets.toArray()[2].owner.id == 2).toBeTruthy();
+    expect(ownerPets.toArray()[2].pet.name == "Abby").toBeTruthy();
+    
+    expect(ownerPets.toArray()[3].owner.id == 2).toBeTruthy();
+    expect(ownerPets.toArray()[3].pet.name == "Sam").toBeTruthy();
+  });
+
   it('union', () => {
     let ownersA = new List<Owner>();
 
@@ -350,5 +404,19 @@ class OwnersByPetTypeAndSex {
         this.type = type;
         this.sex = sex;
         this.owners = owners;
+    }
+}
+
+class Comparer implements IComparer<OwnerPet> {
+    compare(x: OwnerPet, y: OwnerPet) : number {
+        if (x.owner.id > y.owner.id) {
+            if (x.pet.name > y.pet.name) {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        return -1        
     }
 }
