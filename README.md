@@ -10,6 +10,7 @@
 ```typescript
 export interface IList<T> {
     add(item: T) : IList<T>;
+    addRange(items: T[]) : IList<T>;
     remove(predicate: (item:T) => boolean) : IList<T>;
     first(predicate?: (item: T)=> boolean) : T;
     last() : T;
@@ -19,10 +20,11 @@ export interface IList<T> {
     select<TResult>(predicate: (item: T)=> TResult) : IList<TResult>;
     join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (item: T)=> TMatch, 
                                     conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult>;
-    groupBy<TGroup>(predicate: (item: T)=>TGroup) : IList<Group<TGroup, T>>;
+    groupBy(predicate: (item: T) => Array<any>) : IList<Group<T>>;
     union(list: IList<T>) : IList<T>;
     forEach(predicate: (item: T)=> void) : void;
     length: number;
+    clear() : IList<T>;
     toArray() : Array<T>;
 }
 ```
@@ -62,8 +64,8 @@ Below query gets the owners by the sex of the pets.
 
     //query
     let ownersByPetSex = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
-                               .groupBy(x => x.pet.sex)
-                               .select(x =>  new OwnersByPetSex(x.group, x.list.select(y => y.owner)));
+                               .groupBy(x => [x.pet.sex])
+                               .select(x =>  new OwnersByPetSex(x.groups[0], x.list.select(x => x.owner)));
 ```
 
 Entities for above example are:

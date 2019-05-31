@@ -199,8 +199,8 @@ describe('List', () => {
 
     //groupBy
     let ownersByPetSex = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
-                               .groupBy(x => x.pet.sex)
-                               .select(x =>  new OwnersByPetSex(x.group, x.list.select(y => y.owner)));
+                               .groupBy(x => [x.pet.sex])
+                               .select(x =>  new OwnersByPetSex(x.groups[0], x.list.select(x => x.owner)));
 
     expect(ownersByPetSex.toArray().length === 2).toBeTruthy();
 
@@ -248,9 +248,8 @@ describe('List', () => {
 
     //groupBy multiple
     let ownersByPetSex = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
-                               .groupBy(x => x.pet.sex)
-                               .groupBy(x => x.list.first().pet.type)
-                               .select(x =>  new OwnersByPetTypeAndSex(x.group, x.list.first().group, x.list.first().list.select(y => y.owner)));                               
+                               .groupBy(x => [x.pet.sex, x.pet.type])
+                               .select(x =>  new OwnersByPetTypeAndSex(x.groups[1], x.groups[0], x.list.select(x => x.owner)));                               
 
     debugger;
 

@@ -1,5 +1,6 @@
 export interface IList<T> {
     add(item: T) : IList<T>;
+    addRange(items: T[]) : IList<T>;
     remove(predicate: (item:T) => boolean) : IList<T>;
     first(predicate?: (item: T)=> boolean) : T;
     last() : T;
@@ -9,10 +10,11 @@ export interface IList<T> {
     select<TResult>(predicate: (item: T)=> TResult) : IList<TResult>;
     join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (item: T)=> TMatch, 
                                     conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult>;
-    groupBy<TGroup>(predicate: (item: T)=>TGroup) : IList<Group<TGroup, T>>;
+    groupBy(predicate: (item: T) => Array<any>) : IList<Group<T>>;
     union(list: IList<T>) : IList<T>;
     forEach(predicate: (item: T)=> void) : void;
     length: number;
+    clear() : IList<T>;
     toArray() : Array<T>;
 }
 
@@ -142,29 +144,39 @@ export class List<T> implements IList<T> {
         return resultList;
     }
 
-    groupBy<TGroup>(predicate: (t: T)=>TGroup) : IList<Group<TGroup, T>> {        
-        const map = new Map();
-        this.list.forEach((item) => {
-             const key = predicate(item);
-             const collection = map.get(key);
-             if (!collection) {
-                 map.set(key, [item]);
-             } else {
-                 collection.push(item);
-             }
+    clear() : IList<T> {
+        this.list = new Array<T>();
+
+        return this;
+    }
+
+    addRange(items: T[]) : IList<T> {
+        items.forEach(x => this.add(x));
+
+        return this;
+    }
+
+    groupBy(predicate: (item: T) => Array<any>) : IList<Group<T>> {
+        let groups = {};
+        this.list.forEach(function (o) {
+          var group = JSON.stringify(predicate(o));
+          groups[group] = groups[group] || [];
+          groups[group].push(o);
         });
-
-        let groups = new List<Group<TGroup, T>>();
-
-        let iterator = map.entries();
+        let g = Object.keys(groups).map(function (group) {                
+            let a = group.substr(1, group.length - 2);
+            return [a.split(','), groups[group]];
+        });
         
-        for (let nextValue = iterator.next(); nextValue.done !== true; nextValue = iterator.next()) {            
-            let group = new Group<TGroup, T>(nextValue.value[0], nextValue.value[1]);
+        let groupsAll = new List<Group<T>>();
 
-            groups.add(group)
-        }
+        g.forEach(x => {
+            let group= new Group<T>(x[0], x[1]);
 
-        return groups;
+            groupsAll.add(group);
+        });    
+                
+        return groupsAll;
     }
 
     union(list: IList<T>) : IList<T> {
@@ -174,17 +186,17 @@ export class List<T> implements IList<T> {
     }
 }
 
-export interface IGroup<TGroup, T> {
-    group: TGroup;
-    list: List<T>;
+export interface IGroup<T> {
+    groups: any[];
+    list: IList<T>;
 }
 
-export class Group<TGroup, T> implements IGroup<TGroup, T> {
-    group: TGroup;
-    list: List<T> = new List<T>();
+export class Group<T> implements IGroup<T> {
+    groups: any[];
+    list: IList<T> = new List<T>();
 
-    constructor(group: TGroup, list: Array<T>) {
-        this.group = group;
+    constructor(groups: any[], list: Array<T>) {
+        this.groups = groups;
         this.list = new List<T>(list);
     }
 }
