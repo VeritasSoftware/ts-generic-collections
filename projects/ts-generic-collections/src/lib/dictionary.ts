@@ -24,6 +24,10 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     add(key: TKey, value: TValue) : void {
         let pair = new KeyValuePair<TKey, TValue>(key, value);
 
+        if (this.any(x => x.key === pair.key)) {
+            throw "Duplicate key. Cannot add."
+        }
+
         this.list.push(pair);
     }
 
