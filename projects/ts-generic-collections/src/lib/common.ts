@@ -1,14 +1,5 @@
-import { IEnumerable } from './interfaces';
+import { IEnumerable, IGroup } from './interfaces';
 import { List } from './list';
-
-export interface IComparer<T> {
-    compare(x:T, y: T) : number;
-}
-
-export interface IGroup<T> {
-    groups: any[];
-    list: IEnumerable<T>;
-}
 
 export class Group<T> implements IGroup<T> {
     groups: any[];

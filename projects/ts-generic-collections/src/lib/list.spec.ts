@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { List } from './list';
-import { IEnumerable } from './interfaces';
-import { IComparer } from './common';
+import { IEnumerable, IComparer } from './interfaces';
 
 //import { IEnumerable, List, IComparer } from './list';
 

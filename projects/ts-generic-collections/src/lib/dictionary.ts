@@ -1,6 +1,6 @@
-import { IEnumerable } from './interfaces';
+import { IEnumerable, IComparer } from './interfaces';
 import { List } from './list';
-import { Group, IComparer } from './common';
+import { Group } from './common';
 
 export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey, TValue>> {
     add(key: TKey, value: TValue) : void;

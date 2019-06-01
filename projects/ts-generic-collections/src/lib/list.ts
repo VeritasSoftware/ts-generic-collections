@@ -1,5 +1,5 @@
-import { IEnumerable } from './interfaces';
-import { IComparer, Group } from './common';
+import { IEnumerable, IComparer } from './interfaces';
+import { Group } from './common';
 
 export interface IList<T> extends IEnumerable<T> {
     add(item: T) : void;
