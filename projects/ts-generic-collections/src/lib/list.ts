@@ -1,22 +1,11 @@
-export interface IList<T> {
-    add(item: T) : IList<T>;
-    addRange(items: T[]) : IList<T>;
-    remove(predicate: (item:T) => boolean) : IList<T>;
-    first(predicate?: (item: T)=> boolean) : T;
-    last() : T;
-    singleOrDefault(predicate: (item: T)=> boolean) : T;    
-    firstOrDefault(predicate: (item: T)=> boolean) : T;
-    where(predicate: (item: T)=> boolean) : IList<T>;
-    select<TResult>(predicate: (item: T)=> TResult) : IList<TResult>;
-    join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (item: T)=> TMatch, 
-                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult>;
-    groupBy(predicate: (item: T) => Array<any>) : IList<Group<T>>;
-    orderBy(comparer: IComparer<T>) : IList<T>;
-    union(list: IList<T>) : IList<T>;
-    forEach(predicate: (item: T)=> void) : void;
-    length: number;
-    clear() : IList<T>;
-    toArray() : Array<T>;
+import { IEnumerable } from './interfaces';
+import { IComparer, Group } from './common';
+
+export interface IList<T> extends IEnumerable<T> {
+    add(item: T) : void;
+    addRange(items: T[]) : void;
+    remove(predicate: (item:T) => boolean) : void;
+    clear() : void;    
 }
 
 export class List<T> implements IList<T> {
@@ -28,16 +17,17 @@ export class List<T> implements IList<T> {
             this.list = array;
     }
 
-    add(item: T) : IList<T> {
+    /* IList */
+
+    add(item: T) : void {
         this.list.push(item);
-        return this;
     }
 
-    get length(): number {
-        return this.list.length;
+    addRange(items: T[]) : void {
+        items.forEach(x => this.add(x));
     }
 
-    remove(predicate: (t:T) => boolean) : List<T> {
+    remove(predicate: (t:T) => boolean) : void {
         let temp = new Array<T>();
 
         this.list.forEach(element => {
@@ -47,7 +37,21 @@ export class List<T> implements IList<T> {
             }
         });
 
-        return new List(temp);
+        this.list = temp;
+    }
+
+    clear() : void {
+        this.list = new Array<T>();
+    }
+
+    /* IEnumerable */
+
+    asEnumerable() : IEnumerable<T> {
+        return this;
+    }
+    
+    get length(): number {
+        return this.list.length;
     }
 
     first(predicate: (t: T)=> boolean = null) : T {
@@ -103,7 +107,7 @@ export class List<T> implements IList<T> {
         return temp[0];
     }
 
-    where(predicate: (t: T)=> boolean) : IList<T> {
+    where(predicate: (t: T)=> boolean) : IEnumerable<T> {
         let temp = new List<T>();
 
         this.list.filter(element => {
@@ -116,7 +120,7 @@ export class List<T> implements IList<T> {
         return temp;
     }
 
-    select<TResult>(predicate: (t: T)=> TResult) : IList<TResult> {
+    select<TResult>(predicate: (t: T)=> TResult) : IEnumerable<TResult> {
         let temp = new List<TResult>();
 
         this.forEach(x => temp.add(predicate(x)));
@@ -132,8 +136,8 @@ export class List<T> implements IList<T> {
         return this.list;
     }
 
-    join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (t: T)=> TMatch, 
-                                    conditionOuter: (t: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult> {
+    join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (t: T)=> TMatch, 
+                                    conditionOuter: (t: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IEnumerable<TResult> {
         let resultList = new List<TResult>();
 
         this.list.forEach(x => {
@@ -145,19 +149,7 @@ export class List<T> implements IList<T> {
         return resultList;
     }
 
-    clear() : IList<T> {
-        this.list = new Array<T>();
-
-        return this;
-    }
-
-    addRange(items: T[]) : IList<T> {
-        items.forEach(x => this.add(x));
-
-        return this;
-    }
-
-    groupBy(predicate: (item: T) => Array<any>) : IList<Group<T>> {
+    groupBy(predicate: (item: T) => Array<any>) : IEnumerable<Group<T>> {
         let groups = {};
         this.list.forEach(function (o) {
           var group = JSON.stringify(predicate(o));
@@ -175,34 +167,15 @@ export class List<T> implements IList<T> {
         return new List<Group<T>>(g);        
     }
 
-    orderBy(comparer: IComparer<T>) : IList<T> {
+    orderBy(comparer: IComparer<T>) : IEnumerable<T> {
         let temp = this.list.sort((x,y) => comparer.compare(x, y));
 
         return new List<T>(temp);
     }
 
-    union(list: IList<T>) : IList<T> {
+    union(list: IEnumerable<T>) : IEnumerable<T> {
          list.forEach(x => this.list.push(x));
 
          return this;
-    }
-}
-
-export interface IComparer<T> {
-    compare(x:T, y: T) : number;
-}
-
-export interface IGroup<T> {
-    groups: any[];
-    list: IList<T>;
-}
-
-export class Group<T> implements IGroup<T> {
-    groups: any[];
-    list: IList<T> = new List<T>();
-
-    constructor(groups: any[], list: Array<T>) {
-        this.groups = groups;
-        this.list = new List<T>(list);
     }
 }

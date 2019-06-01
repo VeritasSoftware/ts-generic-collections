@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { List } from './list';
+import { IEnumerable } from './interfaces';
+import { IComparer } from './common';
 
-import { IList, List, IComparer } from './list';
+//import { IEnumerable, List, IComparer } from './list';
 
 describe('List', () => {
 
@@ -74,7 +77,7 @@ describe('List', () => {
     list.add(owner);
 
     //remove
-    list = list.remove(owner => owner.name.includes('Doe'));
+    list.remove(owner => owner.name.includes('Doe'));
 
     expect(list.length === 0).toBeTruthy();
   });
@@ -387,9 +390,9 @@ class OwnerPet {
 
 class OwnersByPetSex {
     sex: Sex;
-    owners: IList<Owner>;
+    owners: IEnumerable<Owner>;
 
-    constructor(sex: Sex, owners: IList<Owner>) {
+    constructor(sex: Sex, owners: IEnumerable<Owner>) {
         this.sex = sex;
         this.owners = owners;
     }
@@ -398,9 +401,9 @@ class OwnersByPetSex {
 class OwnersByPetTypeAndSex {
     type: PetType;
     sex: Sex;
-    owners: IList<Owner>;
+    owners: IEnumerable<Owner>;
 
-    constructor(type: PetType, sex: Sex, owners: IList<Owner>) {
+    constructor(type: PetType, sex: Sex, owners: IEnumerable<Owner>) {
         this.type = type;
         this.sex = sex;
         this.owners = owners;

@@ -4,29 +4,40 @@
 ### The generic collections are:
 
 *   List
+*   Dictionary
 
-### List implements interface IList<T>
+### All collections implement interface IEnumerable<T>
 
 ```typescript
-export interface IList<T> {
-    add(item: T) : IList<T>;
-    addRange(items: T[]) : IList<T>;
-    remove(predicate: (item:T) => boolean) : IList<T>;
+export interface IEnumerable<T> {
     first(predicate?: (item: T)=> boolean) : T;
     last() : T;
     singleOrDefault(predicate: (item: T)=> boolean) : T;    
     firstOrDefault(predicate: (item: T)=> boolean) : T;
-    where(predicate: (item: T)=> boolean) : IList<T>;
-    select<TResult>(predicate: (item: T)=> TResult) : IList<TResult>;
-    join<TOuter, TMatch, TResult>(outer: IList<TOuter>, conditionInner: (item: T)=> TMatch, 
-                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IList<TResult>;
-    groupBy(predicate: (item: T) => Array<any>) : IList<Group<T>>;
-    orderBy(comparer: IComparer<T>) : IList<T>;
-    union(list: IList<T>) : IList<T>;
+    where(predicate: (item: T)=> boolean) : IEnumerable<T>;
+    select<TResult>(predicate: (item: T)=> TResult) : IEnumerable<TResult>;
+    join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: T)=> TMatch, 
+                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IEnumerable<TResult>;
+    groupBy(predicate: (item: T) => Array<any>) : IEnumerable<Group<T>>;
+    orderBy(comparer: IComparer<T>) : IEnumerable<T>;
+    union(list: IEnumerable<T>) : IEnumerable<T>;
     forEach(predicate: (item: T)=> void) : void;
     length: number;
-    clear() : IList<T>;
     toArray() : Array<T>;
+    asEnumerable() : IEnumerable<T>;
+}
+```
+
+## List
+
+### List implements interface IList<T>
+
+```typescript
+export interface IList<T> extends IEnumerable<T> {
+    add(item: T) : void;
+    addRange(items: T[]) : void;
+    remove(predicate: (item:T) => boolean) : void;
+    clear() : void;
 }
 ```
 
@@ -123,6 +134,19 @@ class OwnersByPetSex {
         this.sex = sex;
         this.owners = owners;
     }
+}
+```
+
+## Dictionary
+
+### Dictionary implements interface IDictionary<TKey, TValue>
+
+```typescript
+export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey, TValue>> {
+    add(key: TKey, value: TValue) : void;
+    addRange(items: KeyValuePair<TKey, TValue>[]) : void;
+    remove(predicate: (item:KeyValuePair<TKey, TValue>) => boolean) : void;
+    clear() : void;
 }
 ```
 
