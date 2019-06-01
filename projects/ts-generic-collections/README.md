@@ -10,6 +10,8 @@
 
 ```typescript
 export interface IEnumerable<T> {
+    any(predicate?: (item: T)=> boolean) : boolean;
+    all(predicate?: (item: T)=> boolean) : boolean;
     first(predicate?: (item: T)=> boolean) : T;
     last() : T;
     singleOrDefault(predicate: (item: T)=> boolean) : T;    

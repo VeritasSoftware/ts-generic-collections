@@ -49,9 +49,37 @@ export class List<T> implements IList<T> {
     asEnumerable() : IEnumerable<T> {
         return this;
     }
-    
+
     get length(): number {
         return this.list.length;
+    }
+
+    any(predicate?: (item: T)=> boolean) : boolean {
+        if (!predicate) {
+            return this.list.length > 0;
+        }
+
+        for (let i=0; i<this.list.length; i++) {
+            if (predicate(this.list[i]))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    all(predicate?: (item: T)=> boolean) : boolean {
+        if (!predicate) {
+            return this.list.length > 0;
+        }
+        
+        for (let i=0; i<this.list.length; i++) {
+            if (!predicate(this.list[i]))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     first(predicate: (t: T)=> boolean = null) : T {

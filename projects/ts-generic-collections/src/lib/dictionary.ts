@@ -58,6 +58,34 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return this.list.length;
     }
 
+    any(predicate?: (item: KeyValuePair<TKey, TValue>)=> boolean) : boolean {
+        if (!predicate) {
+            return this.list.length > 0;
+        }
+
+        for (let i=0; i<this.list.length; i++) {
+            if (predicate(this.list[i]))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    all(predicate?: (item: KeyValuePair<TKey, TValue>)=> boolean) : boolean {
+        if (!predicate) {
+            return this.list.length > 0;
+        }
+        
+        for (let i=0; i<this.list.length; i++) {
+            if (!predicate(this.list[i]))
+            {
+                return false;
+            }
+        }
+        return true;
+    }    
+
     first(predicate: (t: KeyValuePair<TKey, TValue>)=> boolean = null) : KeyValuePair<TKey, TValue> {
         if (this.list.length <= 0) {
             return null;
