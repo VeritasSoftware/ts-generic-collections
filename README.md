@@ -76,7 +76,7 @@ Below query gets the owners by the sex of their pets.
 
     pets.add(pet);
 
-    //query
+    //query to get owners by the sex/gender of their pets
     let ownersByPetSex = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
                                .groupBy(x => [x.pet.sex])
                                .select(x =>  new OwnersByPetSex(x.groups[0], x.list.select(x => x.owner)));
