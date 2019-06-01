@@ -39,7 +39,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         this.list = new Array<KeyValuePair<TKey, TValue>>();
     }    
 
-    remove(predicate: (t:KeyValuePair<TKey, TValue>) => boolean) : void {
+    remove(predicate: (item:KeyValuePair<TKey, TValue>) => boolean) : void {
         let temp = new Array<KeyValuePair<TKey, TValue>>();
 
         this.list.forEach(element => {
@@ -90,7 +90,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return true;
     }    
 
-    first(predicate: (t: KeyValuePair<TKey, TValue>)=> boolean = null) : KeyValuePair<TKey, TValue> {
+    first(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean = null) : KeyValuePair<TKey, TValue> {
         if (this.list.length <= 0) {
             return null;
         }
@@ -113,7 +113,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return this.list[this.list.length - 1];
     }    
 
-    singleOrDefault(predicate: (t: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
+    singleOrDefault(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
         let temp = new Array<KeyValuePair<TKey, TValue>>();
 
         this.list.filter(element => {
@@ -130,7 +130,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return temp[0];
     }    
 
-    firstOrDefault(predicate: (t: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
+    firstOrDefault(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
         let temp = new Array<KeyValuePair<TKey, TValue>>();
 
         this.list.filter(element => {
@@ -143,7 +143,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return temp[0];
     }
 
-    where(predicate: (t: KeyValuePair<TKey, TValue>)=> boolean) : IDictionary<TKey, TValue> {
+    where(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : IDictionary<TKey, TValue> {
         let temp = new Dictionary<TKey, TValue>();
 
         this.list.filter(element => {
@@ -156,7 +156,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return temp;
     }
 
-    select<TResult>(predicate: (t: KeyValuePair<TKey, TValue>)=> TResult) : IEnumerable<TResult> {
+    select<TResult>(predicate: (item: KeyValuePair<TKey, TValue>)=> TResult) : IEnumerable<TResult> {
         let temp = new List<TResult>();
 
         this.forEach(x => temp.add(predicate(x)));
@@ -164,7 +164,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return temp;
     }
 
-    forEach(predicate: (t: KeyValuePair<TKey, TValue>)=> void) : void {
+    forEach(predicate: (item: KeyValuePair<TKey, TValue>)=> void) : void {
         this.list.forEach(x => predicate(x));
     }
 
@@ -172,8 +172,8 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return this.list;
     }
 
-    join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (t: KeyValuePair<TKey, TValue>)=> TMatch, 
-                                    conditionOuter: (t: TOuter)=> TMatch, select: (x: KeyValuePair<TKey, TValue>, y:TOuter)=> TResult) : IEnumerable<TResult> {
+    join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: KeyValuePair<TKey, TValue>)=> TMatch, 
+                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: KeyValuePair<TKey, TValue>, y:TOuter)=> TResult) : IEnumerable<TResult> {
         let resultList = new List<TResult>();
 
         this.list.forEach(x => {

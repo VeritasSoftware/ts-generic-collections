@@ -27,7 +27,7 @@ export class List<T> implements IList<T> {
         items.forEach(x => this.add(x));
     }
 
-    remove(predicate: (t:T) => boolean) : void {
+    remove(predicate: (item:T) => boolean) : void {
         let temp = new Array<T>();
 
         this.list.forEach(element => {
@@ -82,7 +82,7 @@ export class List<T> implements IList<T> {
         return true;
     }
 
-    first(predicate: (t: T)=> boolean = null) : T {
+    first(predicate: (item: T)=> boolean = null) : T {
         if (this.list.length <= 0) {
             return null;
         }
@@ -105,7 +105,7 @@ export class List<T> implements IList<T> {
         return this.list[this.list.length - 1];
     }    
 
-    singleOrDefault(predicate: (t: T)=> boolean) : T {
+    singleOrDefault(predicate: (item: T)=> boolean) : T {
         let temp = new Array<T>();
 
         this.list.filter(element => {
@@ -122,7 +122,7 @@ export class List<T> implements IList<T> {
         return temp[0];
     }    
 
-    firstOrDefault(predicate: (t: T)=> boolean) : T {
+    firstOrDefault(predicate: (item: T)=> boolean) : T {
         let temp = new Array<T>();
 
         this.list.filter(element => {
@@ -135,7 +135,7 @@ export class List<T> implements IList<T> {
         return temp[0];
     }
 
-    where(predicate: (t: T)=> boolean) : IEnumerable<T> {
+    where(predicate: (item: T)=> boolean) : IEnumerable<T> {
         let temp = new List<T>();
 
         this.list.filter(element => {
@@ -148,7 +148,7 @@ export class List<T> implements IList<T> {
         return temp;
     }
 
-    select<TResult>(predicate: (t: T)=> TResult) : IEnumerable<TResult> {
+    select<TResult>(predicate: (item: T)=> TResult) : IEnumerable<TResult> {
         let temp = new List<TResult>();
 
         this.forEach(x => temp.add(predicate(x)));
@@ -156,7 +156,7 @@ export class List<T> implements IList<T> {
         return temp;
     }
 
-    forEach(predicate: (t: T)=> void) : void {
+    forEach(predicate: (item: T)=> void) : void {
         this.list.forEach(x => predicate(x));
     }
 
@@ -164,8 +164,8 @@ export class List<T> implements IList<T> {
         return this.list;
     }
 
-    join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (t: T)=> TMatch, 
-                                    conditionOuter: (t: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IEnumerable<TResult> {
+    join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: T)=> TMatch, 
+                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IEnumerable<TResult> {
         let resultList = new List<TResult>();
 
         this.list.forEach(x => {
