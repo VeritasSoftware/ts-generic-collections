@@ -6,7 +6,7 @@
 *   List
 *   Dictionary
 
-### All collections implement interface IEnumerable<T>
+### All collections implement interface IEnumerable\<T\>
 
 ```typescript
 export interface IEnumerable<T> {
@@ -30,7 +30,7 @@ export interface IEnumerable<T> {
 
 ## List
 
-### List implements interface IList<T>
+### List implements interface IList\<T\>
 
 ```typescript
 export interface IList<T> extends IEnumerable<T> {
