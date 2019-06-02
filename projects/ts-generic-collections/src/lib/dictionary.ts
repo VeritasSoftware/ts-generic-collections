@@ -7,6 +7,10 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
     addRange(items: KeyValuePair<TKey, TValue>[]) : void;
     remove(predicate: (item:KeyValuePair<TKey, TValue>) => boolean) : void;
     clear() : void;
+
+    containsKey(key: TKey) : boolean;
+    containsValue(value: TValue) : boolean;
+    tryGetValue(key: TKey);
 }
 
 export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
@@ -51,6 +55,24 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
 
         this.list = temp;
     }    
+
+    containsKey(key: TKey) : boolean {
+        return this.any(x => x.key === key);
+    }
+
+    containsValue(value: TValue) : boolean {
+        return this.any(x => x.value === value);
+    }
+
+    tryGetValue(key: TKey) : TValue {
+        let item = this.singleOrDefault(x => x.key === key);
+
+        if (!item) {
+            return item.value;
+        }
+
+        return null;
+    }
 
     /* IEnumerable */
 

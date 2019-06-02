@@ -149,6 +149,10 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
     addRange(items: KeyValuePair<TKey, TValue>[]) : void;
     remove(predicate: (item:KeyValuePair<TKey, TValue>) => boolean) : void;
     clear() : void;
+
+    containsKey(key: TKey) : boolean;
+    containsValue(value: TValue) : boolean;
+    tryGetValue(key: TKey);
 }
 ```
 
