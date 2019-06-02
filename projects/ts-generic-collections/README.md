@@ -152,7 +152,7 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
 
     containsKey(key: TKey) : boolean;
     containsValue(value: TValue) : boolean;
-    tryGetValue(key: TKey);
+    tryGetValue(key: TKey) : TValue;
 }
 ```
 
