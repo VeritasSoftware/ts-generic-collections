@@ -170,6 +170,34 @@ describe('List', () => {
     expect(ownerPets.toArray().filter(op => op.owner.name == "Jane Doe" && op.pet.name == "Sam").length == 1).toBeTruthy();
   });
 
+  it('leftJoin', () => {
+    let owners = new List<Owner>();
+
+    let owner = new Owner();
+    owner.id = 1;
+    owner.name = "John Doe";
+    owners.add(owner);
+
+    owner = new Owner();
+    owner.id = 2;
+    owner.name = "Jane Doe";
+    owners.add(owner);    
+
+    let pets = new List<Pet>();
+
+    let pet = new Pet();
+    pet.ownerId = 2;
+    pet.name = "Sam";
+
+    pets.add(pet);    
+
+    //leftJoin
+    let ownerPets = owners.leftJoin(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y));
+
+    expect(ownerPets.toArray().filter(op => op.owner.name == "John Doe" && !op.pet).length == 1).toBeTruthy();    
+    expect(ownerPets.toArray().filter(op => op.owner.name == "Jane Doe" && op.pet.name == "Sam").length == 1).toBeTruthy();
+  });  
+
   it('groupBy', () => {
     let owners = new List<Owner>();
 

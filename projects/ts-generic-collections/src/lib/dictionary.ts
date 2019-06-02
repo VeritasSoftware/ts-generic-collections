@@ -1,6 +1,6 @@
 import { IEnumerable, IComparer } from './interfaces';
 import { List } from './list';
-import { Group } from './common';
+import { Group, objCompare } from './common';
 
 export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey, TValue>> {
     add(key: TKey, value: TValue) : void;
@@ -207,6 +207,24 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return resultList;
     }
 
+    leftJoin<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: KeyValuePair<TKey, TValue>)=> TMatch, 
+                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: KeyValuePair<TKey, TValue>, y:TOuter)=> TResult) : IEnumerable<TResult> {
+        let resultList = new List<TResult>();
+
+        this.list.forEach(x => {
+            let outerEntries = outer.toArray().filter(y => conditionInner(x) === conditionOuter(y));
+
+            if (outerEntries && outerEntries.length <= 0) {
+                resultList.add(select(x, null));
+            }
+            else {
+                outerEntries.forEach(z => resultList.add(select(x, z)));
+            }
+        })
+
+        return resultList;
+    }    
+
     groupBy(predicate: (item: KeyValuePair<TKey, TValue>) => Array<any>) : IEnumerable<Group<KeyValuePair<TKey, TValue>>> {
         let groups = {};
         this.list.forEach(function (o) {
@@ -248,31 +266,3 @@ export class KeyValuePair<TKey, TValue> {
         this.value = value;
     }
 }
-
-var objCompare = function (obj1, obj2) {
-	//Loop through properties in object 1
-	for (var p in obj1) {
-		//Check property exists on both objects
-		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
- 
-		switch (typeof (obj1[p])) {
-			//Deep compare objects
-			case 'object':
-				if (!objCompare(obj1[p], obj2[p])) return false;
-				break;
-			//Compare function code
-			case 'function':
-				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
-				break;
-			//Compare values
-			default:
-				if (obj1[p] != obj2[p]) return false;
-		}
-	}
- 
-	//Check object 2 for any extra properties
-	for (var p in obj2) {
-		if (typeof (obj1[p]) == 'undefined') return false;
-	}
-	return true;
-};
