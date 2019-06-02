@@ -232,6 +232,7 @@ describe('Dictionary', () => {
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Jaguar", "J 500", Country.England);
+    let car3 = new Car(2, "Ford", "F 500", Country.US);
 
     let features = new List<Feature>();
 
@@ -257,12 +258,26 @@ describe('Dictionary', () => {
 
     dictionary.add(car2, features);
 
+    features = new List<Feature>();
+
+    feature = new Feature(1, "4 - Door");
+
+    features.add(feature);
+
+    feature = new Feature(1, "Hatchback");
+
+    features.add(feature);
+
+    dictionary.add(car3, features);
+
     let result = dictionary.groupBy(x => [x.value.any(y => y.name == "Sedan"), x.key.country]);
+
+    expect(result.toArray().length == 2);
 
     expect(result.toArray()[0].groups[0] == "Sedan");
     expect(result.toArray()[0].groups[1] == Country.England);
     expect(result.toArray()[0].list.toArray()[0].key.id == 1);
-    
+
     expect(result.toArray()[1].groups[0] == "Sedan");
     expect(result.toArray()[1].groups[1] == Country.Germany);
     expect(result.toArray()[1].list.toArray()[0].key.id == 2);    
