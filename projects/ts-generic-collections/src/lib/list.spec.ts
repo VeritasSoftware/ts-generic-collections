@@ -1,8 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { List } from './list';
 import { IEnumerable, IComparer } from './interfaces';
 
-//import { IEnumerable, List, IComparer } from './list';
+//using distribution
+//import { List, IEnumerable, IComparer } from '../../../../dist/ts-generic-collections';
 
 describe('List', () => {
 
