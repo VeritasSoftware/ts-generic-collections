@@ -192,7 +192,7 @@ describe('List', () => {
     pets.add(pet);    
 
     //leftJoin
-    let ownerPets = owners.leftJoin(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y));
+    let ownerPets = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y), true);
 
     expect(ownerPets.toArray().filter(op => op.owner.name == "John Doe" && !op.pet).length == 1).toBeTruthy();    
     expect(ownerPets.toArray().filter(op => op.owner.name == "Jane Doe" && op.pet.name == "Sam").length == 1).toBeTruthy();

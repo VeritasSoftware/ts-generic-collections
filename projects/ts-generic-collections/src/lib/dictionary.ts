@@ -195,26 +195,13 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     }
 
     join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: KeyValuePair<TKey, TValue>)=> TMatch, 
-                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: KeyValuePair<TKey, TValue>, y:TOuter)=> TResult) : IEnumerable<TResult> {
+                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: KeyValuePair<TKey, TValue>, y:TOuter)=> TResult, leftJoin: boolean = false) : IEnumerable<TResult> {
         let resultList = new List<TResult>();
 
         this.list.forEach(x => {
             let outerEntries = outer.toArray().filter(y => conditionInner(x) === conditionOuter(y));
 
-            outerEntries.forEach(z => resultList.add(select(x, z)));
-        })
-
-        return resultList;
-    }
-
-    leftJoin<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: KeyValuePair<TKey, TValue>)=> TMatch, 
-                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: KeyValuePair<TKey, TValue>, y:TOuter)=> TResult) : IEnumerable<TResult> {
-        let resultList = new List<TResult>();
-
-        this.list.forEach(x => {
-            let outerEntries = outer.toArray().filter(y => conditionInner(x) === conditionOuter(y));
-
-            if (outerEntries && outerEntries.length <= 0) {
+            if (leftJoin && outerEntries && outerEntries.length <= 0) {
                 resultList.add(select(x, null));
             }
             else {
@@ -223,7 +210,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         })
 
         return resultList;
-    }    
+    }
 
     groupBy(predicate: (item: KeyValuePair<TKey, TValue>) => Array<any>) : IEnumerable<Group<KeyValuePair<TKey, TValue>>> {
         let groups = {};

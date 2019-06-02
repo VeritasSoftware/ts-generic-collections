@@ -165,31 +165,18 @@ export class List<T> implements IList<T> {
     }
 
     join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: T)=> TMatch, 
-                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IEnumerable<TResult> {
+                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult, leftJoin: boolean = false) : IEnumerable<TResult> {
         let resultList = new List<TResult>();
 
         this.list.forEach(x => {
             let outerEntries = outer.toArray().filter(y => conditionInner(x) === conditionOuter(y));
 
-            outerEntries.forEach(z => resultList.add(select(x, z)));
-        })
-
-        return resultList;
-    }
-
-    leftJoin<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: T)=> TMatch, 
-                                    conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult) : IEnumerable<TResult> {
-        let resultList = new List<TResult>();
-
-        this.list.forEach(x => {
-            let outerEntries = outer.toArray().filter(y => conditionInner(x) === conditionOuter(y));
-
-            if (outerEntries && outerEntries.length <= 0) {
+            if (leftJoin && outerEntries && outerEntries.length <= 0) {
                 resultList.add(select(x, null));
             }
             else {
                 outerEntries.forEach(z => resultList.add(select(x, z)));
-            }            
+            }
         })
 
         return resultList;
