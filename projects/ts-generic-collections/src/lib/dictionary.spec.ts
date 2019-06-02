@@ -3,8 +3,6 @@ import { Dictionary, KeyValuePair } from './dictionary';
 import { IEnumerable, IComparer } from './interfaces';
 import { IList, List } from './list';
 
-//import { IEnumerable, List, IComparer } from './list';
-
 describe('Dictionary', () => {
 
   beforeEach(async(() => {
@@ -202,11 +200,72 @@ describe('Dictionary', () => {
   });
 
   it('groupBy', () => {
+    let dictionary = new Dictionary<Car, IList<Feature>>();
 
+    let car = new Car(1, "Mercedez", "S 400", Country.Germany);
+    let car2 = new Car(2, "Jaguar", "J 500", Country.England);
+
+    let features = new List<Feature>();
+
+    let feature = new Feature(1, "2 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car, features);
+
+    features = new List<Feature>();
+
+    feature = new Feature(2, "4 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car2, features);
+
+    let result = dictionary.groupBy(x => [x.key.country]);
+
+    expect(result.toArray()[0].groups[0] == Country.Germany);
+    expect(result.toArray()[1].groups[0] == Country.England);
   });
   
   it('groupBy multiple fields', () => {
+    let dictionary = new Dictionary<Car, IList<Feature>>();
 
+    let car = new Car(1, "Mercedez", "S 400", Country.Germany);
+    let car2 = new Car(2, "Jaguar", "J 500", Country.England);
+
+    let features = new List<Feature>();
+
+    let feature = new Feature(1, "2 - Door");
+
+    features.add(feature);
+
+    feature = new Feature(1, "Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car, features);
+
+    features = new List<Feature>();
+
+    feature = new Feature(1, "4 - Door");
+
+    features.add(feature);
+
+    feature = new Feature(1, "Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car2, features);
+
+    let result = dictionary.groupBy(x => [x.value.any(y => y.name == "Sedan"), x.key.country]);
+
+    expect(result.toArray()[0].groups[0] == "Sedan");
+    expect(result.toArray()[0].groups[1] == Country.England);
+    expect(result.toArray()[0].list.toArray()[0].key.id == 1);
+    
+    expect(result.toArray()[1].groups[0] == "Sedan");
+    expect(result.toArray()[1].groups[1] == Country.Germany);
+    expect(result.toArray()[1].list.toArray()[0].key.id == 2);    
   });  
   
   it('orderBy', () => {
