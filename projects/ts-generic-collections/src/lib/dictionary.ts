@@ -61,11 +61,11 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     }
 
     containsValue(value: TValue) : boolean {
-        return this.any(x => x.value === value);
+        return this.any(x => objCompare(x.value, value));
     }
 
     tryGetValue(key: TKey) : TValue {
-        let item = this.singleOrDefault(x => x.key === key);
+        let item = this.singleOrDefault(x => objCompare(x.key, key));
 
         if (item) {
             return item.value;
