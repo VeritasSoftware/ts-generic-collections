@@ -67,7 +67,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     tryGetValue(key: TKey) : TValue {
         let item = this.singleOrDefault(x => x.key === key);
 
-        if (!item) {
+        if (item) {
             return item.value;
         }
 
