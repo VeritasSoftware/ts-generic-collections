@@ -123,17 +123,28 @@ export class List<T> implements IList<T> {
     }    
 
     firstOrDefault(predicate: (item: T)=> boolean) : T {
-        let temp = new Array<T>();
-
-        this.list.filter(element => {
-            if (predicate(element))
+        for (let i=0; i<this.length; i++) {
+            let item = this.list[i];
+            if (predicate(item))
             {
-                temp.push(element);
+                return item;
             }
-        });
+        }
 
-        return temp[0];
+        return null;
     }
+
+    lastOrDefault(predicate: (item: T)=> boolean) : T {
+        for (let i=this.length; i>=0; i--) {
+            let item = this.list[i - 1];
+            if (predicate(item))
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }    
 
     where(predicate: (item: T)=> boolean) : IEnumerable<T> {
         let temp = new List<T>();

@@ -5,6 +5,7 @@ export interface IEnumerable<T> {
     last() : T;
     singleOrDefault(predicate: (item: T)=> boolean) : T;    
     firstOrDefault(predicate: (item: T)=> boolean) : T;
+    lastOrDefault(predicate: (item: T)=> boolean) : T;
     where(predicate: (item: T)=> boolean) : IEnumerable<T>;
     select<TResult>(predicate: (item: T)=> TResult) : IEnumerable<TResult>;
     join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: T)=> TMatch, 

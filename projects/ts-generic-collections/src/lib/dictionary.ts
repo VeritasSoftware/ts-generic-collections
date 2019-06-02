@@ -152,18 +152,29 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return temp[0];
     }    
 
-    firstOrDefault(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
-        let temp = new Array<KeyValuePair<TKey, TValue>>();
-
-        this.list.filter(element => {
-            if (predicate(element))
+    firstOrDefault(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {        
+        for (let i=0; i<this.length; i++) {
+            let item = this.list[i];
+            if (predicate(item))
             {
-                temp.push(element);
+                return item;
             }
-        });
+        }
 
-        return temp[0];
+        return null;
     }
+
+    lastOrDefault(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
+        for (let i=this.length; i>=0; i--) {
+            let item = this.list[i - 1];
+            if (predicate(item))
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }    
 
     where(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : IDictionary<TKey, TValue> {
         let temp = new Dictionary<TKey, TValue>();
@@ -241,6 +252,32 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
          this.addRange(list.toArray());
 
          return this;
+    }    
+
+    sum(predicate: (item: KeyValuePair<TKey, TValue>)=> number) : number {
+        let sum: number = 0;
+        this.list.forEach(x => sum = sum + predicate(x));
+
+        return sum;
+    }
+
+    avg(predicate: (item: KeyValuePair<TKey, TValue>)=> number) : number {        
+        return this.sum(predicate) / this.length;
+    }
+
+    count(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean = null) : number {
+        if (!predicate) {
+            return this.length;
+        }
+
+        let count: number = 0;
+        this.list.forEach(x => {
+            if(predicate(x)) {
+                count++;
+            }
+        });
+
+        return count;
     }    
 }
 

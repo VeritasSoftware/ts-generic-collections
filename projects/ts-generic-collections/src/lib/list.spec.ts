@@ -115,7 +115,24 @@ describe('List', () => {
     let ownerResult = list.firstOrDefault(owner => owner.name.includes('Doe'));
 
     expect(ownerResult.name == "John Doe").toBeTruthy();
-  });  
+  });
+  
+  it('lastOrDefault', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //firstOrDefault
+    let ownerResult = list.lastOrDefault(owner => owner.name.includes('Doe'));
+
+    expect(ownerResult.name == "Jane Doe").toBeTruthy();
+  });
 
   it('singleOrDefault fail', () => {
     let list = new List<Owner>();
@@ -451,16 +468,6 @@ class OwnersByPetSex {
     constructor(sex: Sex, owners: IEnumerable<Owner>) {
         this.sex = sex;
         this.owners = owners;
-    }
-}
-
-class OwnersCountByPetSex {
-    sex: Sex;
-    count: number;
-
-    constructor(sex: Sex, count: number) {
-        this.sex = sex;
-        this.count = count;
     }
 }
 
