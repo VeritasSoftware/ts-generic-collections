@@ -28,7 +28,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     add(key: TKey, value: TValue) : void {
         let pair = new KeyValuePair<TKey, TValue>(key, value);
 
-        if (this.any(x => x.key === pair.key)) {
+        if (this.containsKey(key)) {
             throw "Duplicate key. Cannot add."
         }
 
@@ -57,7 +57,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     }    
 
     containsKey(key: TKey) : boolean {
-        return this.any(x => x.key === key);
+        return this.any(x => objCompare(x.key, key));
     }
 
     containsValue(value: TValue) : boolean {
@@ -232,7 +232,8 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     }
 
     union(list: IEnumerable<KeyValuePair<TKey, TValue>>) : IDictionary<TKey, TValue> {
-         list.forEach(x => this.list.push(x));
+         //list.forEach(x => this.add(x.key, x.value));
+         this.addRange(list.toArray());
 
          return this;
     }    
@@ -247,3 +248,31 @@ export class KeyValuePair<TKey, TValue> {
         this.value = value;
     }
 }
+
+var objCompare = function (obj1, obj2) {
+	//Loop through properties in object 1
+	for (var p in obj1) {
+		//Check property exists on both objects
+		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+ 
+		switch (typeof (obj1[p])) {
+			//Deep compare objects
+			case 'object':
+				if (!objCompare(obj1[p], obj2[p])) return false;
+				break;
+			//Compare function code
+			case 'function':
+				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
+				break;
+			//Compare values
+			default:
+				if (obj1[p] != obj2[p]) return false;
+		}
+	}
+ 
+	//Check object 2 for any extra properties
+	for (var p in obj2) {
+		if (typeof (obj1[p]) == 'undefined') return false;
+	}
+	return true;
+};

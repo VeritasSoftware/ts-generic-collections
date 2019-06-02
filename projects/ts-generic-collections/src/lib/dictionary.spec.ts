@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Dictionary } from './dictionary';
+import { Dictionary, KeyValuePair } from './dictionary';
 import { IEnumerable, IComparer } from './interfaces';
 import { IList, List } from './list';
 
@@ -33,6 +33,29 @@ describe('Dictionary', () => {
     expect(dictionary.containsValue(features));
     expect(dictionary.tryGetValue(car).length == 1);
   });
+
+  it('add fail', () => {
+    let dictionary = new Dictionary<Car, IList<Feature>>();
+
+    let car = new Car(1, "Mercedez", "S 400", Country.Germany);
+
+    let features = new List<Feature>();
+
+    let feature = new Feature(1, "2 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car, features);
+
+    car = new Car(1, "Mercedez", "S 400", Country.Germany);
+
+    try {
+        dictionary.add(car, features);
+    }
+    catch(e) {
+        expect(e == "Duplicate key. Cannot add.");
+    }
+  });  
 
   it('remove', () => {
     let dictionary = new Dictionary<Car, IList<Feature>>();
@@ -121,7 +144,7 @@ describe('Dictionary', () => {
     let dictionary = new Dictionary<Car, IList<Feature>>();
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
-    let car2 = new Car(2, "Mercedez", "J 500", Country.England);
+    let car2 = new Car(2, "Mercedez", "S 500", Country.Germany);
 
     let features = new List<Feature>();
 
@@ -148,7 +171,7 @@ describe('Dictionary', () => {
     let dictionary = new Dictionary<Car, IList<Feature>>();
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
-    let car2 = new Car(2, "Mercedez", "J 500", Country.England);
+    let car2 = new Car(2, "Mercedez", "S 500", Country.Germany);
 
     let features = new List<Feature>();
 
@@ -187,11 +210,80 @@ describe('Dictionary', () => {
   });  
   
   it('orderBy', () => {
+    let dictionary = new Dictionary<Car, IList<Feature>>();
 
+    let car = new Car(1, "Mercedez", "S 400", Country.Germany);
+    let car2 = new Car(2, "Jaguar", "J 500", Country.England);
+
+    let features = new List<Feature>();
+
+    let feature = new Feature(1, "2 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car, features);
+
+    features = new List<Feature>();
+
+    feature = new Feature(2, "4 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car2, features);
+
+    let result = dictionary.orderBy(new ComparerByCarName());
+
+    expect(result.toArray()[0].key.name == "Jaguar");
+    expect(result.toArray()[1].key.name == "Mercedez");
   });
 
   it('union', () => {
+    let dictionary = new Dictionary<Car, IList<Feature>>();
 
+    let car = new Car(1, "Mercedez", "S 400", Country.Germany);
+    let car2 = new Car(2, "Jaguar", "J 500", Country.England);
+
+    let features = new List<Feature>();
+
+    let feature = new Feature(1, "2 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car, features);
+
+    features = new List<Feature>();
+
+    feature = new Feature(2, "4 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car2, features);
+
+
+    let dictionary2 = new Dictionary<Car, IList<Feature>>();
+
+    car = new Car(1, "Volvo", "V 400", Country.Germany);
+    car2 = new Car(2, "Ford", "F 500", Country.US);
+
+    features = new List<Feature>();
+
+    feature = new Feature(1, "2 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary2.add(car, features);
+
+    features = new List<Feature>();
+
+    feature = new Feature(2, "4 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary2.add(car2, features);
+
+    let result = dictionary.union(dictionary2);
+
+    expect(result.length == 4);    
   });  
 });
 
@@ -221,5 +313,15 @@ class Feature {
     constructor(carId: number, name: string) {
         this.carId = carId;
         this.name = name;
+    }
+}
+
+class ComparerByCarName implements IComparer<KeyValuePair<Car, IList<Feature>>> {
+    compare(x: KeyValuePair<Car, IList<Feature>>, y: KeyValuePair<Car, IList<Feature>>) : number {
+        if (x.key.name > y.key.name) {            
+            return 1;
+        }
+
+        return -1;        
     }
 }
