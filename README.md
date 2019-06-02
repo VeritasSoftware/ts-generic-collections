@@ -23,6 +23,9 @@ export interface IEnumerable<T> {
     groupBy(predicate: (item: T) => Array<any>) : IEnumerable<IGroup<T>>;
     orderBy(comparer: IComparer<T>) : IEnumerable<T>;
     union(list: IEnumerable<T>) : IEnumerable<T>;
+    sum(predicate: (item: T)=> number) : number;
+    avg(predicate: (item: T)=> number) : number;
+    count(predicate?: (item: T)=> boolean) : number;
     forEach(predicate: (item: T)=> void) : void;
     length: number;
     toArray() : Array<T>;

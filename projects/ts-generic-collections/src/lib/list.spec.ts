@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { List } from './list';
+import { List, IList } from './list';
 import { IEnumerable, IComparer } from './interfaces';
 
 //using distribution
@@ -244,6 +244,33 @@ describe('List', () => {
     expect(ownersByPetSex.toArray()[1].owners.length == 1).toBeTruthy();
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
   });
+
+  it('sum', () => {
+    let numbers: number[] = [1, 2, 3]
+    let list: IList<number> = new List<number>(numbers);
+
+    let sum = list.sum(x => x);
+
+    expect(sum == 6);
+  });
+
+  it('average', () => {
+    let numbers: number[] = [1, 2, 3]
+    let list: IList<number> = new List<number>(numbers);
+
+    let avg = list.avg(x => x);
+
+    expect(avg == 2);
+  });
+
+  it('count', () => {
+    let numbers: number[] = [1, 2, 3, 101, 102]
+    let list: IList<number> = new List<number>(numbers);
+
+    let countNumbersGreaterThan100 = list.count(x => x > 100);
+
+    expect(countNumbersGreaterThan100 == 2);
+  });  
   
   it('groupBy multiple fields', () => {
     let owners = new List<Owner>();
@@ -424,6 +451,16 @@ class OwnersByPetSex {
     constructor(sex: Sex, owners: IEnumerable<Owner>) {
         this.sex = sex;
         this.owners = owners;
+    }
+}
+
+class OwnersCountByPetSex {
+    sex: Sex;
+    count: number;
+
+    constructor(sex: Sex, count: number) {
+        this.sex = sex;
+        this.count = count;
     }
 }
 

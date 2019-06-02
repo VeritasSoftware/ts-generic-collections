@@ -211,4 +211,31 @@ export class List<T> implements IList<T> {
 
          return this;
     }
+
+    sum(predicate: (item: T)=> number) : number {
+        let sum: number = 0;
+        this.list.forEach(x => sum = sum + predicate(x));
+
+        return sum;
+    }
+
+    avg(predicate: (item: T)=> number) : number {        
+        return this.sum(predicate) / this.length;
+    }
+
+    count(predicate: (item: T)=> boolean = null) : number {
+        if (!predicate) {
+            return this.length;
+        }
+
+        let count: number = 0;
+        this.list.forEach(x => {
+            if(predicate(x)) {
+                count++;
+            }
+        });
+
+        return count;
+    }
+
 }
