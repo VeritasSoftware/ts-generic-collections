@@ -230,9 +230,9 @@ describe('Dictionary', () => {
   it('groupBy multiple fields', () => {
     let dictionary = new Dictionary<Car, IList<Feature>>();
 
-    let car = new Car(1, "Mercedez", "S 400", Country.Germany);
-    let car2 = new Car(2, "Jaguar", "J 500", Country.England);
-    let car3 = new Car(2, "Ford", "F 500", Country.US);
+    let car = new Car(1, "Mercedez", "S 400", Country.Germany, true);
+    let car2 = new Car(2, "Jaguar", "J 500", Country.England, true);
+    let car3 = new Car(3, "Ford", "F 500", Country.US);
 
     let features = new List<Feature>();
 
@@ -270,17 +270,21 @@ describe('Dictionary', () => {
 
     dictionary.add(car3, features);
 
-    let result = dictionary.groupBy(x => [x.value.any(y => y.name == "Sedan"), x.key.country]);
+    let result = dictionary.groupBy(x => [x.key.isLuxury, x.key.country]);
 
     expect(result.toArray().length == 2);
 
-    expect(result.toArray()[0].groups[0] == "Sedan");
-    expect(result.toArray()[0].groups[1] == Country.England);
-    expect(result.toArray()[0].list.toArray()[0].key.id == 1);
+    expect(result.toArray()[0].groups[0] == false);
+    expect(result.toArray()[0].groups[1] == Country.US);
+    expect(result.toArray()[0].list.toArray()[0].key.id == 3);
 
-    expect(result.toArray()[1].groups[0] == "Sedan");
-    expect(result.toArray()[1].groups[1] == Country.Germany);
+    expect(result.toArray()[1].groups[0] == true);
+    expect(result.toArray()[1].groups[1] == Country.England);
     expect(result.toArray()[1].list.toArray()[0].key.id == 2);    
+
+    expect(result.toArray()[1].groups[0] == true);
+    expect(result.toArray()[1].groups[1] == Country.Germany);
+    expect(result.toArray()[1].list.toArray()[0].key.id == 1);    
   });  
   
   it('orderBy', () => {
@@ -372,11 +376,13 @@ class Car {
     name: string;
     model: string;
     country: Country;
+    isLuxury: boolean;
 
-    constructor(id: number, name: string, model: string, country: Country) {
+    constructor(id: number, name: string, model: string, country: Country, isLuxury: boolean = false) {
         this.id = id;
         this.name = name;
         this.country = country;
+        this.isLuxury = isLuxury;
     }
 }
 
