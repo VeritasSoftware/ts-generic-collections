@@ -1,4 +1,5 @@
 export interface IEnumerable<T> {
+    elementAt(index: number) : T;
     any(predicate?: (item: T)=> boolean) : boolean;
     all(predicate?: (item: T)=> boolean) : boolean;
     first(predicate?: (item: T)=> boolean) : T;

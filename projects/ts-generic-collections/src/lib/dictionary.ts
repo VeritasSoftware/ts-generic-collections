@@ -84,6 +84,15 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return this.list.length;
     }
 
+    elementAt(index: number) : KeyValuePair<TKey, TValue> {
+        try {
+            return this.list[index];
+        }
+        catch (e) {
+            return null;
+        }
+    }    
+
     any(predicate?: (item: KeyValuePair<TKey, TValue>)=> boolean) : boolean {
         if (!predicate) {
             return this.list.length > 0;

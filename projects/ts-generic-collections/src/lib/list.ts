@@ -54,6 +54,15 @@ export class List<T> implements IList<T> {
         return this.list.length;
     }
 
+    elementAt(index: number) : T {
+        try {
+            return this.list[index];
+        }
+        catch (e) {
+            return null;
+        }
+    }
+
     any(predicate?: (item: T)=> boolean) : boolean {
         if (!predicate) {
             return this.list.length > 0;
