@@ -27,6 +27,8 @@ export interface IEnumerable<T> {
     union(list: IEnumerable<T>) : IEnumerable<T>;
     sum(predicate: (item: T)=> number) : number;
     avg(predicate: (item: T)=> number) : number;
+    min(predicate: (item: T)=> number) : number;
+    max(predicate: (item: T)=> number) : number;
     count(predicate?: (item: T)=> boolean) : number;
     forEach(predicate: (item: T)=> void) : void;
     length: number;

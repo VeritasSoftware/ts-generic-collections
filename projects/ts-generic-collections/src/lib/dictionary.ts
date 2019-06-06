@@ -274,6 +274,46 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return this.sum(predicate) / this.length;
     }
 
+    min(predicate: (item: KeyValuePair<TKey, TValue>)=> number) : number {
+        let min: number = 0;
+        let i = 0;
+        this.list.forEach(x => 
+        {
+            if (i == 0) {
+                min = predicate(x);
+            }
+            else {
+                let val = predicate(x);
+                if (val < min) {
+                    min = val;
+                }
+            }            
+            i++;
+        });
+
+        return min;
+    }
+    
+    max(predicate: (item: KeyValuePair<TKey, TValue>)=> number) : number {
+        let max: number = 0;
+        let i = 0;
+        this.list.forEach(x => 
+        {
+            if (i == 0) {
+                max = predicate(x);
+            }
+            else {
+                let val = predicate(x);
+                if (val > max) {
+                    max = val;
+                }
+            }            
+            i++;
+        });
+
+        return max;
+    }
+
     count(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean = null) : number {
         if (!predicate) {
             return this.length;

@@ -287,7 +287,25 @@ describe('List', () => {
     let countNumbersGreaterThan100 = list.count(x => x > 100);
 
     expect(countNumbersGreaterThan100 == 2);
-  });  
+  });
+  
+  it('min', () => {
+    let numbers: number[] = [5, 2, 1, 101, 102]
+    let list: IList<number> = new List<number>(numbers);
+
+    let min = list.min(x => x);
+
+    expect(min == 1);
+  });
+
+  it('max', () => {
+    let numbers: number[] = [5, 2, 102, 102, 101]
+    let list: IList<number> = new List<number>(numbers);
+
+    let max = list.max(x => x);
+
+    expect(max == 102);
+  });
   
   it('groupBy multiple fields', () => {
     let owners = new List<Owner>();
