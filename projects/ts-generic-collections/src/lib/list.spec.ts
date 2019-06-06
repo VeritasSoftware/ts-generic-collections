@@ -66,6 +66,31 @@ describe('List', () => {
     expect(list.length == 1).toBeTruthy();
   });
 
+  it('addRange', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+
+    list.add(owner);
+
+    let array = new Array<Owner>();
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+
+    array.push(owner);
+
+    owner = new Owner();
+    owner.name = "Peter Smith";
+
+    array.push(owner);
+
+    list.addRange(array);
+
+    expect(list.length == 3);
+  });  
+
   it('remove', () => {
     let list = new List<Owner>();
 
@@ -264,7 +289,7 @@ describe('List', () => {
 
   it('distinct', () => {
     let numbers: number[] = [1, 2, 3, 1, 3];
-    let list: IList<number> = new List<number>(numbers);
+    let list = new List(numbers);
 
     let distinct = list.distinct(new EqualityComparer());
 
@@ -276,7 +301,7 @@ describe('List', () => {
 
   it('sum', () => {
     let numbers: number[] = [1, 2, 3]
-    let list: IList<number> = new List<number>(numbers);
+    let list: IList<number> = new List(numbers);
 
     let sum = list.sum(x => x);
 
@@ -285,7 +310,7 @@ describe('List', () => {
 
   it('average', () => {
     let numbers: number[] = [1, 2, 3]
-    let list: IList<number> = new List<number>(numbers);
+    let list: IList<number> = new List(numbers);
 
     let avg = list.avg(x => x);
 
@@ -294,7 +319,7 @@ describe('List', () => {
 
   it('count', () => {
     let numbers: number[] = [1, 2, 3, 101, 102]
-    let list: IList<number> = new List<number>(numbers);
+    let list: IList<number> = new List(numbers);
 
     let countNumbersGreaterThan100 = list.count(x => x > 100);
 
@@ -303,7 +328,7 @@ describe('List', () => {
   
   it('min', () => {
     let numbers: number[] = [5, 2, 1, 101, 102]
-    let list: IList<number> = new List<number>(numbers);
+    let list: IList<number> = new List(numbers);
 
     let min = list.min(x => x);
 
@@ -312,7 +337,7 @@ describe('List', () => {
 
   it('max', () => {
     let numbers: number[] = [5, 2, 102, 102, 101]
-    let list: IList<number> = new List<number>(numbers);
+    let list: IList<number> = new List(numbers);
 
     let max = list.max(x => x);
 
