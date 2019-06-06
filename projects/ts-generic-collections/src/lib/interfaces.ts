@@ -13,6 +13,7 @@ export interface IEnumerable<T> {
                                     conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult, leftJoin?: boolean) : IEnumerable<TResult>; 
     groupBy(predicate: (item: T) => Array<any>) : IEnumerable<IGroup<T>>;
     orderBy(comparer: IComparer<T>) : IEnumerable<T>;
+    distinct(comparer: IEqualityComparer<T>) : IEnumerable<T>;
     union(list: IEnumerable<T>) : IEnumerable<T>;
     sum(predicate: (item: T)=> number) : number;
     avg(predicate: (item: T)=> number) : number;
@@ -32,4 +33,8 @@ export interface IGroup<T> {
 
 export interface IComparer<T> {
     compare(x:T, y: T) : number;
+}
+
+export interface IEqualityComparer<T> {
+    equals(x:T, y: T) : boolean;
 }

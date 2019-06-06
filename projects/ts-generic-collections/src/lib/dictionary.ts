@@ -1,4 +1,4 @@
-import { IEnumerable, IComparer } from './interfaces';
+import { IEnumerable, IComparer, IEqualityComparer } from './interfaces';
 import { List } from './list';
 import { Group, objCompare } from './common';
 
@@ -256,8 +256,20 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return new List<KeyValuePair<TKey, TValue>>(temp);
     }
 
+    distinct(comparer: IEqualityComparer<KeyValuePair<TKey, TValue>>) : IEnumerable<KeyValuePair<TKey, TValue>> {
+        let uniques = new List<KeyValuePair<TKey, TValue>>();
+        this.forEach(x => {
+            uniques.forEach(y => {
+                if (!comparer.equals(x, y)) {
+                    uniques.add(x);
+                }
+            });
+        });
+
+        return uniques;
+    }
+
     union(list: IEnumerable<KeyValuePair<TKey, TValue>>) : IDictionary<TKey, TValue> {
-         //list.forEach(x => this.add(x.key, x.value));
          this.addRange(list.toArray());
 
          return this;

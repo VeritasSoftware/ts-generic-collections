@@ -1,4 +1,4 @@
-import { IEnumerable, IComparer } from './interfaces';
+import { IEnumerable, IComparer, IEqualityComparer } from './interfaces';
 import { Group, objCompare } from './common';
 
 export interface IList<T> extends IEnumerable<T> {
@@ -227,9 +227,22 @@ export class List<T> implements IList<T> {
     }
 
     union(list: IEnumerable<T>) : IEnumerable<T> {
-         list.forEach(x => this.list.push(x));
+        this.addRange(list.toArray());
 
          return this;
+    }
+
+    distinct(comparer: IEqualityComparer<T>) : IEnumerable<T> {
+        let uniques = new List<T>();
+        this.forEach(x => {
+            uniques.forEach(y => {
+                if (!comparer.equals(x, y)) {
+                    uniques.add(x);
+                }
+            });
+        });
+
+        return uniques;
     }
 
     sum(predicate: (item: T)=> number) : number {

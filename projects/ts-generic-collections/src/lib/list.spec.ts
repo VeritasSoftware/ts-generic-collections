@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { List, IList } from './list';
-import { IEnumerable, IComparer } from './interfaces';
+import { IEnumerable, IComparer, IEqualityComparer } from './interfaces';
 
 //using distribution
 //import { List, IEnumerable, IComparer } from '../../../../dist/ts-generic-collections';
@@ -262,6 +262,18 @@ describe('List', () => {
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
   });
 
+  it('distinct', () => {
+    let numbers: number[] = [1, 2, 3, 1, 3];
+    let list: IList<number> = new List<number>(numbers);
+
+    let distinct = list.distinct(new EqualityComparer());
+
+    expect(distinct.length == 3);
+    expect(distinct.elementAt(0) == 1);
+    expect(distinct.elementAt(1) == 2);
+    expect(distinct.elementAt(2) == 3);
+  });  
+
   it('sum', () => {
     let numbers: number[] = [1, 2, 3]
     let list: IList<number> = new List<number>(numbers);
@@ -513,4 +525,10 @@ class Comparer implements IComparer<OwnerPet> {
 
         return -1        
     }
+}
+
+class EqualityComparer implements IEqualityComparer<number> {
+  equals(x: number, y: number) : boolean {
+    return x == y;
+  }
 }
