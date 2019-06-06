@@ -138,9 +138,9 @@ class OwnerPet {
 
 class OwnersByPetSex {
     sex: Sex;
-    owners: IList<Owner>;
+    owners: IEnumerable<Owner>;
 
-    constructor(sex: Sex, owners: IList<Owner>) {
+    constructor(sex: Sex, owners: IEnumerable<Owner>) {
         this.sex = sex;
         this.owners = owners;
     }
