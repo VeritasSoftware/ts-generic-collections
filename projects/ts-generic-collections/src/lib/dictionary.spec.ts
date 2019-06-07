@@ -13,6 +13,19 @@ describe('Dictionary', () => {
 
   });
 
+  it('instantiate dictionary from json', () => {
+    let jsonKeyValuePairArray = '[{"key": 1, "value": {"id":1, "name": "Mercedez", "model": "S 400", "country": "Germany", "isLuxury": true }},{"key": 2, "value": {"id":2, "name": "Ford", "model": "F 100", "country": "US", "isLuxury": false }}]';
+    
+    let keyValueArray: KeyValuePair<number, Car>[] = JSON.parse(jsonKeyValuePairArray);
+
+    let list = new Dictionary<number, Car>(keyValueArray);
+
+    var luxuryCars = list.where(x => x.value.isLuxury);
+
+    expect(list.length == 1);
+    expect(luxuryCars.toArray()[0].value.model == "Mercedez");
+  });
+
   it('add', () => {
     let dictionary = new Dictionary<Car, IList<Feature>>();
 

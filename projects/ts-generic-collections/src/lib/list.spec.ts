@@ -16,6 +16,19 @@ describe('List', () => {
 
   });
 
+  it('instantiate list from json', () => {
+    let jsonOwnerArray = '[{"id":1, "name": "John Doe"},{"id":2, "name": "Jane Doe"}]';
+
+    let ownerArray: Owner[] = JSON.parse(jsonOwnerArray);
+
+    let list = new List(ownerArray);
+
+    var jane = list.singleOrDefault(x => x.id == 2);
+
+    expect(list.length == 2);
+    expect(jane.name == "Jane Doe");
+  });
+
   it('where', () => {
     let owners = new List<Owner>();
 

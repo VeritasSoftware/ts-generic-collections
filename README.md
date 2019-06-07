@@ -100,6 +100,16 @@ Below query gets the owners by the sex of their pets.
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();                               
 ```
 
+### You can instantiate a List from json as shown below
+
+```typescript
+    let jsonOwnerArray = '[{"id":1, "name": "John Doe"},{"id":2, "name": "Jane Doe"}]';
+
+    let ownerArray: Owner[] = JSON.parse(jsonOwnerArray);
+
+    let list = new List(ownerArray);
+```
+
 Entities for above example are:
 
 ```typescript
