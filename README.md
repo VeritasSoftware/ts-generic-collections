@@ -118,16 +118,10 @@ class Owner {
     name: string;
 }
 
-enum PetType {
-    Cat,
-    Dog
-}
-
 class Pet {
     ownerId: number;
     name: string;
     sex: Sex;
-    type: PetType;
 }
 
 enum Sex {
@@ -176,6 +170,7 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
 ### You can browse more examples of queries below
 
 [**List**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/list.spec.ts)
+
 [**Dictionary**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/dictionary.spec.ts)
 
 
