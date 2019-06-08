@@ -100,7 +100,7 @@ Below query gets the owners by the sex of their pets.
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();                               
 ```
 
-### You can instantiate a List from json as shown below
+### You can instantiate a List from JSON as shown below
 
 ```typescript
     let jsonOwnerArray = '[{"id":1, "name": "John Doe"},{"id":2, "name": "Jane Doe"}]';
@@ -110,13 +110,12 @@ Below query gets the owners by the sex of their pets.
     let list = new List(ownerArray);
 ```
 
-Entities for above example are:
+### Entities for above example are
 
 ```typescript
 class Owner {
     id: number;
     name: string;
-    sex: Sex;
 }
 
 enum PetType {
@@ -177,7 +176,6 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
 ### You can browse more examples of queries below
 
 [**List**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/list.spec.ts)
-
 [**Dictionary**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/dictionary.spec.ts)
 
 
