@@ -121,25 +121,41 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return true;
     }    
 
-    single(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
-        let temp = new Array<KeyValuePair<TKey, TValue>>();
+    single(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean = null) : KeyValuePair<TKey, TValue> {
+        if (this.list.length <= 0) {
+            throw "Item does not exist.";
+        }
 
-        this.list.filter(element => {
-            if (predicate(element))
-            {
-                temp.push(element);
+        if (predicate) {
+            let item = this.singleOrDefault(predicate);
+
+            if (!item) {
+                throw "Item does not exist.";
             }
-        });
 
-        if (temp.length > 1) {
-            throw "Multiple instances of entity found.";
+            return item;
         }
+        
+        return this.list[0];
 
-        if (temp.length <= 0) {
-            throw "Entity not found.";
-        }
+        // let temp = new Array<KeyValuePair<TKey, TValue>>();
 
-        return temp[0];
+        // this.list.filter(element => {
+        //     if (predicate(element))
+        //     {
+        //         temp.push(element);
+        //     }
+        // });
+
+        // if (temp.length > 1) {
+        //     throw "Multiple instances of entity found.";
+        // }
+
+        // if (temp.length <= 0) {
+        //     throw "Entity not found.";
+        // }
+
+        // return temp[0];
     }
 
     first(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean = null) : KeyValuePair<TKey, TValue> {

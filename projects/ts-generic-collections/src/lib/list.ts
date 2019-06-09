@@ -91,25 +91,40 @@ export class List<T> implements IList<T> {
         return true;
     }
 
-    single(predicate: (item: T)=> boolean) : T {
-        let temp = new Array<T>();
+    single(predicate: (item: T)=> boolean = null) : T {
+        if (this.list.length <= 0) {
+            throw "Item does not exist.";
+        }
 
-        this.list.filter(element => {
-            if (predicate(element))
-            {
-                temp.push(element);
+        if (predicate) {
+            let item = this.singleOrDefault(predicate);
+
+            if (!item) {
+                throw "Item does not exist.";
             }
-        });
 
-        if (temp.length > 1) {
-            throw "Multiple instances of entity found.";
+            return item;
         }
+        
+        return this.list[0];
+        // let temp = new Array<T>();
 
-        if (temp.length <= 0) {
-            throw "Entity not found.";
-        }
+        // this.list.filter(element => {
+        //     if (predicate(element))
+        //     {
+        //         temp.push(element);
+        //     }
+        // });
 
-        return temp[0];
+        // if (temp.length > 1) {
+        //     throw "Multiple instances of entity found.";
+        // }
+
+        // if (temp.length <= 0) {
+        //     throw "Entity not found.";
+        // }
+
+        // return temp[0];
     }
 
     first(predicate: (item: T)=> boolean = null) : T {

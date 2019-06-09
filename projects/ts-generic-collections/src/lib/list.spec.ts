@@ -138,6 +138,44 @@ describe('List', () => {
     expect(ownerResult.name == "John Doe").toBeTruthy();
   });
 
+  it('single', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //single
+    let ownerResult = list.single(owner => owner.name == 'John Doe');
+
+    expect(ownerResult.name == "John Doe").toBeTruthy();
+  });
+  
+  it('single fail', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    try
+    {
+      //single
+      let ownerResult = list.single(owner => owner.name == 'Peter Smith');
+    }
+    catch(e) {
+      expect(e == "Item does not exist.");
+    }
+  });  
+
   it('firstOrDefault', () => {
     let list = new List<Owner>();
 
@@ -215,6 +253,12 @@ describe('List', () => {
     pets.add(pet);
 
     pet = new Pet();
+    pet.ownerId = 2;
+    pet.name = "Pete";
+
+    pets.add(pet);
+
+    pet = new Pet();
     pet.ownerId = 1;
     pet.name = "Bob";
 
@@ -225,6 +269,7 @@ describe('List', () => {
 
     expect(ownerPets.toArray().filter(op => op.owner.name == "John Doe" && op.pet.name == "Bob").length == 1).toBeTruthy();
     expect(ownerPets.toArray().filter(op => op.owner.name == "Jane Doe" && op.pet.name == "Sam").length == 1).toBeTruthy();
+    expect(ownerPets.toArray().filter(op => op.owner.name == "Jane Doe" && op.pet.name == "Pete").length == 1).toBeTruthy();
   });
 
   it('leftJoin', () => {
@@ -278,6 +323,13 @@ describe('List', () => {
     pets.add(pet);
 
     pet = new Pet();
+    pet.ownerId = 2;
+    pet.name = "Millie";
+    pet.sex = Sex.F;
+
+    pets.add(pet);
+
+    pet = new Pet();
     pet.ownerId = 1;
     pet.name = "Jenny";
     pet.sex = Sex.F;
@@ -292,8 +344,9 @@ describe('List', () => {
     expect(ownersByPetSex.toArray().length === 2).toBeTruthy();
 
     expect(ownersByPetSex.toArray()[0].sex == Sex.F).toBeTruthy();
-    expect(ownersByPetSex.toArray()[0].owners.length === 1).toBeTruthy();
+    expect(ownersByPetSex.toArray()[0].owners.length === 2).toBeTruthy();
     expect(ownersByPetSex.toArray()[0].owners.toArray()[0].name == "John Doe").toBeTruthy();
+    expect(ownersByPetSex.toArray()[0].owners.toArray()[1].name == "Jane Doe").toBeTruthy();
 
     expect(ownersByPetSex.toArray()[1].sex == Sex.M).toBeTruthy();
     expect(ownersByPetSex.toArray()[1].owners.length == 1).toBeTruthy();
