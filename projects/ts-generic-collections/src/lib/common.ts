@@ -38,3 +38,6 @@ export var objCompare = function (obj1, obj2) {
 	}
 	return true;
 };
+
+export const ITEM_NOT_FOUND_MSG: string = "Item does not exist.";
+export const MULTIPLE_INSTANCES_FOUND_MSG: string = "Multiple instances of entity found.";

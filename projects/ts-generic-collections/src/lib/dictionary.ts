@@ -1,6 +1,6 @@
 import { IEnumerable, IComparer, IEqualityComparer } from './interfaces';
 import { List } from './list';
-import { Group, objCompare } from './common';
+import { Group, objCompare, ITEM_NOT_FOUND_MSG, MULTIPLE_INSTANCES_FOUND_MSG } from './common';
 
 export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey, TValue>> {
     add(key: TKey, value: TValue) : void;
@@ -123,51 +123,32 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
 
     single(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean = null) : KeyValuePair<TKey, TValue> {
         if (this.list.length <= 0) {
-            throw "Item does not exist.";
+            throw ITEM_NOT_FOUND_MSG;
         }
 
         if (predicate) {
             let item = this.singleOrDefault(predicate);
 
             if (!item) {
-                throw "Item does not exist.";
+                throw ITEM_NOT_FOUND_MSG;
             }
 
             return item;
         }
         
         return this.list[0];
-
-        // let temp = new Array<KeyValuePair<TKey, TValue>>();
-
-        // this.list.filter(element => {
-        //     if (predicate(element))
-        //     {
-        //         temp.push(element);
-        //     }
-        // });
-
-        // if (temp.length > 1) {
-        //     throw "Multiple instances of entity found.";
-        // }
-
-        // if (temp.length <= 0) {
-        //     throw "Entity not found.";
-        // }
-
-        // return temp[0];
     }
 
     first(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean = null) : KeyValuePair<TKey, TValue> {
         if (this.list.length <= 0) {
-            throw "Item does not exist.";
+            throw ITEM_NOT_FOUND_MSG;
         }
 
         if (predicate) {
             let item = this.firstOrDefault(predicate);
 
             if (!item) {
-                throw "Item does not exist.";
+                throw ITEM_NOT_FOUND_MSG;
             }
 
             return item;
@@ -178,14 +159,14 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     
     last(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
         if (this.list.length <= 0) {
-            throw "Item does not exist.";
+            throw ITEM_NOT_FOUND_MSG;
         }
 
         if (predicate) {
             let item = this.lastOrDefault(predicate);
 
             if (!item) {
-                throw "Item does not exist.";
+                throw ITEM_NOT_FOUND_MSG;
             }
 
             return item;
@@ -205,7 +186,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         });
 
         if (temp.length > 1) {
-            throw "Multiple instances of entity found.";
+            throw MULTIPLE_INSTANCES_FOUND_MSG;
         }
 
         if (temp.length <= 0) {
