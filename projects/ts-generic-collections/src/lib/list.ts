@@ -129,14 +129,14 @@ export class List<T> implements IList<T> {
 
     first(predicate: (item: T)=> boolean = null) : T {
         if (this.list.length <= 0) {
-            throw "First item does not exist.";
+            throw "Item does not exist.";
         }
 
         if (predicate) {
             let item = this.firstOrDefault(predicate);
 
             if (!item) {
-                throw "First item does not exist.";
+                throw "Item does not exist.";
             }
 
             return item;
@@ -147,14 +147,14 @@ export class List<T> implements IList<T> {
     
     last(predicate: (item: T)=> boolean = null) : T {
         if (this.list.length <= 0) {
-            throw "Last item does not exist.";
+            throw "Item does not exist.";
         }
 
         if (predicate) {
             let item = this.lastOrDefault(predicate);
 
             if (!item) {
-                throw "Last item does not exist.";
+                throw "Item does not exist.";
             }
 
             return item;

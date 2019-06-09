@@ -160,14 +160,14 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
 
     first(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean = null) : KeyValuePair<TKey, TValue> {
         if (this.list.length <= 0) {
-            throw "First item does not exist.";
+            throw "Item does not exist.";
         }
 
         if (predicate) {
             let item = this.firstOrDefault(predicate);
 
             if (!item) {
-                throw "First item does not exist.";
+                throw "Item does not exist.";
             }
 
             return item;
@@ -178,14 +178,14 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     
     last(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
         if (this.list.length <= 0) {
-            throw "Last item does not exist.";
+            throw "Item does not exist.";
         }
 
         if (predicate) {
             let item = this.lastOrDefault(predicate);
 
             if (!item) {
-                throw "Last item does not exist.";
+                throw "Item does not exist.";
             }
 
             return item;

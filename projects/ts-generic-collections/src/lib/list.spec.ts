@@ -192,6 +192,44 @@ describe('List', () => {
 
     expect(ownerResult.name == "John Doe").toBeTruthy();
   });
+
+  it('last', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //last
+    let ownerResult = list.last(owner => owner.name.includes('Doe'));
+
+    expect(ownerResult.name == "Jane Doe").toBeTruthy();
+  });
+
+  it('last fail', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    try
+    {
+      //last
+      let ownerResult = list.last(owner => owner.name == 'Peter Smith');
+    }
+    catch(e) {
+      expect(e == "Item does not exist.");
+    }
+  });  
   
   it('lastOrDefault', () => {
     let list = new List<Owner>();
