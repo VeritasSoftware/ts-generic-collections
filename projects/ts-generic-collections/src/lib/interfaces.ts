@@ -4,7 +4,7 @@ export interface IEnumerable<T> {
     all(predicate?: (item: T)=> boolean) : boolean;
     single(predicate: (item: T)=> boolean) : T;
     first(predicate?: (item: T)=> boolean) : T;
-    last() : T;
+    last(predicate?: (item: T)=> boolean) : T;
     singleOrDefault(predicate: (item: T)=> boolean) : T;    
     firstOrDefault(predicate: (item: T)=> boolean) : T;
     lastOrDefault(predicate: (item: T)=> boolean) : T;
