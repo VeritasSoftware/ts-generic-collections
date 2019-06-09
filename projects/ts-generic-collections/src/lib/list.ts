@@ -91,6 +91,27 @@ export class List<T> implements IList<T> {
         return true;
     }
 
+    single(predicate: (item: T)=> boolean) : T {
+        let temp = new Array<T>();
+
+        this.list.filter(element => {
+            if (predicate(element))
+            {
+                temp.push(element);
+            }
+        });
+
+        if (temp.length > 1) {
+            throw "Multiple instances of entity found.";
+        }
+
+        if (temp.length <= 0) {
+            throw "Entity not found.";
+        }
+
+        return temp[0];
+    }
+
     first(predicate: (item: T)=> boolean = null) : T {
         if (this.list.length <= 0) {
             return null;
@@ -126,6 +147,10 @@ export class List<T> implements IList<T> {
 
         if (temp.length > 1) {
             throw "Multiple instances of entity found.";
+        }
+
+        if (temp.length <= 0) {
+            return null;
         }
 
         return temp[0];

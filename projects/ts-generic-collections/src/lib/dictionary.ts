@@ -15,7 +15,7 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
 
 export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
 {
-    list: Array<KeyValuePair<TKey, TValue>> = new Array<KeyValuePair<TKey, TValue>>();
+    private list: Array<KeyValuePair<TKey, TValue>> = new Array<KeyValuePair<TKey, TValue>>();
 
     constructor(list: Array<KeyValuePair<TKey, TValue>> = null) {
         if (list) {
@@ -121,6 +121,27 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return true;
     }    
 
+    single(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean) : KeyValuePair<TKey, TValue> {
+        let temp = new Array<KeyValuePair<TKey, TValue>>();
+
+        this.list.filter(element => {
+            if (predicate(element))
+            {
+                temp.push(element);
+            }
+        });
+
+        if (temp.length > 1) {
+            throw "Multiple instances of entity found.";
+        }
+
+        if (temp.length <= 0) {
+            throw "Entity not found.";
+        }
+
+        return temp[0];
+    }
+
     first(predicate: (item: KeyValuePair<TKey, TValue>)=> boolean = null) : KeyValuePair<TKey, TValue> {
         if (this.list.length <= 0) {
             return null;
@@ -156,6 +177,10 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
 
         if (temp.length > 1) {
             throw "Multiple instances of entity found.";
+        }
+
+        if (temp.length <= 0) {
+            return null;
         }
 
         return temp[0];

@@ -13,6 +13,7 @@ export interface IEnumerable<T> {
     elementAt(index: number) : T;
     any(predicate?: (item: T)=> boolean) : boolean;
     all(predicate?: (item: T)=> boolean) : boolean;
+    single(predicate: (item: T)=> boolean) : T;
     first(predicate?: (item: T)=> boolean) : T;
     last() : T;
     singleOrDefault(predicate: (item: T)=> boolean) : T;    
