@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { List, IList } from './list';
 import { IEnumerable, IComparer, IEqualityComparer } from './interfaces';
+import { ITEM_NOT_FOUND_MSG, MULTIPLE_INSTANCES_FOUND_MSG } from './common';
 
 //using distribution
 //import { List, IEnumerable, IComparer } from '../../../../dist/ts-generic-collections';
@@ -138,6 +139,27 @@ describe('List', () => {
     expect(ownerResult.name == "John Doe").toBeTruthy();
   });
 
+  it('singleOrDefault fail', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);    
+
+    try
+    {
+        //singleOrDefault fail
+        let ownerResult = list.singleOrDefault(owner => owner.name.includes('Doe'));    
+    }
+    catch(e) {
+        expect(e == MULTIPLE_INSTANCES_FOUND_MSG).toBeTruthy();
+    }    
+  });
+
   it('single', () => {
     let list = new List<Owner>();
 
@@ -172,7 +194,7 @@ describe('List', () => {
       let ownerResult = list.single(owner => owner.name == 'Peter Smith');
     }
     catch(e) {
-      expect(e == "Item does not exist.");
+      expect(e == ITEM_NOT_FOUND_MSG);
     }
   });  
 
@@ -191,6 +213,61 @@ describe('List', () => {
     let ownerResult = list.firstOrDefault(owner => owner.name.includes('Doe'));
 
     expect(ownerResult.name == "John Doe").toBeTruthy();
+  });
+
+  it('first', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //last
+    let ownerResult = list.first(owner => owner.name.includes('Doe'));
+
+    expect(ownerResult.name == "John Doe").toBeTruthy();
+  });
+
+  it('first fail', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    try
+    {
+      //last
+      let ownerResult = list.first(owner => owner.name == 'Peter Smith');
+    }
+    catch(e) {
+      expect(e == ITEM_NOT_FOUND_MSG);
+    }
+  });
+  
+  it('lastOrDefault', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //firstOrDefault
+    let ownerResult = list.lastOrDefault(owner => owner.name.includes('Doe'));
+
+    expect(ownerResult.name == "Jane Doe").toBeTruthy();
   });
 
   it('last', () => {
@@ -227,46 +304,8 @@ describe('List', () => {
       let ownerResult = list.last(owner => owner.name == 'Peter Smith');
     }
     catch(e) {
-      expect(e == "Item does not exist.");
+      expect(e == ITEM_NOT_FOUND_MSG);
     }
-  });  
-  
-  it('lastOrDefault', () => {
-    let list = new List<Owner>();
-
-    let owner = new Owner();
-    owner.name = "John Doe";
-    list.add(owner);
-
-    owner = new Owner();
-    owner.name = "Jane Doe";
-    list.add(owner);
-
-    //firstOrDefault
-    let ownerResult = list.lastOrDefault(owner => owner.name.includes('Doe'));
-
-    expect(ownerResult.name == "Jane Doe").toBeTruthy();
-  });
-
-  it('singleOrDefault fail', () => {
-    let list = new List<Owner>();
-
-    let owner = new Owner();
-    owner.name = "John Doe";
-    list.add(owner);
-
-    owner = new Owner();
-    owner.name = "Jane Doe";
-    list.add(owner);    
-
-    try
-    {
-        //singleOrDefault fail
-        let ownerResult = list.singleOrDefault(owner => owner.name.includes('Doe'));    
-    }
-    catch(e) {
-        expect(e == "Multiple instances of entity found.").toBeTruthy();
-    }    
   });
 
   it('join', () => {
@@ -389,63 +428,6 @@ describe('List', () => {
     expect(ownersByPetSex.toArray()[1].sex == Sex.M).toBeTruthy();
     expect(ownersByPetSex.toArray()[1].owners.length == 1).toBeTruthy();
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
-  });
-
-  it('distinct', () => {
-    let numbers: number[] = [1, 2, 3, 1, 3];
-    let list = new List(numbers);
-
-    let distinct = list.distinct(new EqualityComparer());
-
-    expect(distinct.length == 3);
-    expect(distinct.elementAt(0) == 1);
-    expect(distinct.elementAt(1) == 2);
-    expect(distinct.elementAt(2) == 3);
-  });  
-
-  it('sum', () => {
-    let numbers: number[] = [1, 2, 3]
-    let list: IList<number> = new List(numbers);
-
-    let sum = list.sum(x => x);
-
-    expect(sum == 6);
-  });
-
-  it('average', () => {
-    let numbers: number[] = [1, 2, 3]
-    let list: IList<number> = new List(numbers);
-
-    let avg = list.avg(x => x);
-
-    expect(avg == 2);
-  });
-
-  it('count', () => {
-    let numbers: number[] = [1, 2, 3, 101, 102]
-    let list: IList<number> = new List(numbers);
-
-    let countNumbersGreaterThan100 = list.count(x => x > 100);
-
-    expect(countNumbersGreaterThan100 == 2);
-  });
-  
-  it('min', () => {
-    let numbers: number[] = [5, 2, 1, 101, 102]
-    let list: IList<number> = new List(numbers);
-
-    let min = list.min(x => x);
-
-    expect(min == 1);
-  });
-
-  it('max', () => {
-    let numbers: number[] = [5, 2, 102, 102, 101]
-    let list: IList<number> = new List(numbers);
-
-    let max = list.max(x => x);
-
-    expect(max == 102);
   });
   
   it('groupBy multiple fields', () => {
@@ -584,6 +566,63 @@ describe('List', () => {
     let ownersResult = ownersA.union(ownersB);
 
     expect(ownersResult.length === 4).toBeTruthy();
+  });  
+
+  it('distinct', () => {
+    let numbers: number[] = [1, 2, 3, 1, 3];
+    let list = new List(numbers);
+
+    let distinct = list.distinct(new EqualityComparer());
+
+    expect(distinct.length == 3);
+    expect(distinct.elementAt(0) == 1);
+    expect(distinct.elementAt(1) == 2);
+    expect(distinct.elementAt(2) == 3);
+  });  
+
+  it('sum', () => {
+    let numbers: number[] = [1, 2, 3]
+    let list: IList<number> = new List(numbers);
+
+    let sum = list.sum(x => x);
+
+    expect(sum == 6);
+  });
+
+  it('average', () => {
+    let numbers: number[] = [1, 2, 3]
+    let list: IList<number> = new List(numbers);
+
+    let avg = list.avg(x => x);
+
+    expect(avg == 2);
+  });
+
+  it('count', () => {
+    let numbers: number[] = [1, 2, 3, 101, 102]
+    let list: IList<number> = new List(numbers);
+
+    let countNumbersGreaterThan100 = list.count(x => x > 100);
+
+    expect(countNumbersGreaterThan100 == 2);
+  });
+  
+  it('min', () => {
+    let numbers: number[] = [5, 2, 1, 101, 102]
+    let list: IList<number> = new List(numbers);
+
+    let min = list.min(x => x);
+
+    expect(min == 1);
+  });
+
+  it('max', () => {
+    let numbers: number[] = [5, 2, 102, 102, 101]
+    let list: IList<number> = new List(numbers);
+
+    let max = list.max(x => x);
+
+    expect(max == 102);
   });  
 });
 
