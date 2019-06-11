@@ -5,7 +5,7 @@ import { IEnumerable, IComparer, IEqualityComparer } from './interfaces';
 import { ITEM_NOT_FOUND_MSG, MULTIPLE_INSTANCES_FOUND_MSG } from './common';
 
 //using distribution
-//import { List, IEnumerable, IComparer } from '../../../../dist/ts-generic-collections';
+//import { List, IEnumerable, IComparer, IEqualityComparer, ITEM_NOT_FOUND_MSG, MULTIPLE_INSTANCES_FOUND_MSG  } from '../../../../dist/ts-generic-collections';
 
 describe('List', () => {
 
@@ -28,44 +28,6 @@ describe('List', () => {
 
     expect(list.length == 2);
     expect(jane.name == "Jane Doe");
-  });
-
-  it('where', () => {
-    let owners = new List<Owner>();
-
-    let owner = new Owner();
-    owner.id = 1;
-    owner.name = "John Doe";
-    owners.add(owner);
-
-    owner = new Owner();
-    owner.id = 2;
-    owner.name = "Jane Doe";
-    owners.add(owner);    
-
-    let pets = new List<Pet>();
-
-    let pet = new Pet();
-    pet.ownerId = 2;
-    pet.name = "Sam";
-    pet.sex = Sex.M;
-
-    pets.add(pet);
-
-    pet = new Pet();
-    pet.ownerId = 1;
-    pet.name = "Jenny";
-    pet.sex = Sex.F;
-
-    pets.add(pet);
-
-    //Get owners who have Female pets
-    let ownersWhoHaveFemalePets = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
-                                        .where(x => x.pet.sex == Sex.F)
-                                        .select(x => x.owner);
-
-    expect(ownersWhoHaveFemalePets.length === 1).toBeTruthy();
-    expect(ownersWhoHaveFemalePets.toArray()[0].name = "John Doe").toBeTruthy();                      
   });
 
   it('add', () => {
@@ -122,6 +84,95 @@ describe('List', () => {
     expect(list.length === 0).toBeTruthy();
   });
 
+  it('elementAt', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //remove
+    let result = list.elementAt(1);
+
+    expect(result.name == "Jane Doe").toBeTruthy();
+  });
+
+  it('any', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //remove
+    let result = list.any(x => x.name == "Jane Doe");
+
+    expect(result).toBeTruthy();
+  });
+
+  it('all', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //remove
+    let result = list.all(x => x.name.includes("Doe"));
+
+    expect(result).toBeTruthy();
+  });
+
+  it('where', () => {
+    let owners = new List<Owner>();
+
+    let owner = new Owner();
+    owner.id = 1;
+    owner.name = "John Doe";
+    owners.add(owner);
+
+    owner = new Owner();
+    owner.id = 2;
+    owner.name = "Jane Doe";
+    owners.add(owner);    
+
+    let pets = new List<Pet>();
+
+    let pet = new Pet();
+    pet.ownerId = 2;
+    pet.name = "Sam";
+    pet.sex = Sex.M;
+
+    pets.add(pet);
+
+    pet = new Pet();
+    pet.ownerId = 1;
+    pet.name = "Jenny";
+    pet.sex = Sex.F;
+
+    pets.add(pet);
+
+    //Get owners who have Female pets
+    let ownersWhoHaveFemalePets = owners.join(pets, owner => owner.id, pet => pet.ownerId, (x, y) => new OwnerPet(x,y))
+                                        .where(x => x.pet.sex == Sex.F)
+                                        .select(x => x.owner);
+
+    expect(ownersWhoHaveFemalePets.length === 1).toBeTruthy();
+    expect(ownersWhoHaveFemalePets.toArray()[0].name = "John Doe").toBeTruthy();                      
+  });
+  
   it('singleOrDefault', () => {
     let list = new List<Owner>();
 
