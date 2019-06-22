@@ -310,6 +310,22 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
          return this;
     }    
 
+    skip(no: number) : IDictionary<TKey, TValue> {
+        if (no > 0) {
+            return new Dictionary(this.list.slice(no, this.list.length - 1));
+        }
+        
+        return this;
+    }
+
+    take(no: number) : IDictionary<TKey, TValue> {
+        if (no > 0) {
+            return new Dictionary(this.list.slice(0, no));
+        }        
+
+        return this;
+    }    
+
     sum(predicate: (item: KeyValuePair<TKey, TValue>)=> number) : number {
         let sum: number = 0;
         this.list.forEach(x => sum = sum + predicate(x));

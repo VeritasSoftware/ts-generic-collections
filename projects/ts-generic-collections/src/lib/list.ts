@@ -280,6 +280,22 @@ export class List<T> implements IList<T> {
         return uniques;
     }
 
+    skip(no: number) : IEnumerable<T> {
+        if (no > 0) {
+            return new List(this.list.slice(no, this.list.length - 1));
+        }
+        
+        return this;
+    }
+
+    take(no: number) : IEnumerable<T> {
+        if (no > 0) {
+            return new List(this.list.slice(0, no));
+        }        
+
+        return this;
+    }
+
     sum(predicate: (item: T)=> number) : number {
         let sum: number = 0;
         this.list.forEach(x => sum = sum + predicate(x));

@@ -631,6 +631,33 @@ describe('List', () => {
     expect(distinct.elementAt(2) == 3);
   });  
 
+  it('skip', () => {
+    let numbers: number[] = [1, 2, 3]
+    let list: IList<number> = new List(numbers);
+
+    let result = list.skip(2);
+
+    expect(result.length == 1);
+  });
+
+  it('take', () => {
+    let numbers: number[] = [1, 2, 3]
+    let list: IList<number> = new List(numbers);
+
+    let result = list.take(2);
+
+    expect(result.length == 2);
+  });  
+
+  it('skip and take', () => {
+    let numbers: number[] = [1, 2, 3, 4]
+    let list: IList<number> = new List(numbers);
+
+    let result = list.skip(1).take(2);
+
+    expect(result.length == 2);
+  });
+
   it('sum', () => {
     let numbers: number[] = [1, 2, 3]
     let list: IList<number> = new List(numbers);

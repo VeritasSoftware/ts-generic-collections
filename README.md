@@ -27,6 +27,8 @@ export interface IEnumerable<T> {
     orderBy(comparer: IComparer<T>) : IEnumerable<T>;
     distinct(comparer: IEqualityComparer<T>) : IEnumerable<T>;
     union(list: IEnumerable<T>) : IEnumerable<T>;
+    skip(no: number) : IEnumerable<T>;
+    take(no: number) : IEnumerable<T>;
     sum(predicate: (item: T)=> number) : number;
     avg(predicate: (item: T)=> number) : number;
     min(predicate: (item: T)=> number) : number;
