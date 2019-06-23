@@ -1,6 +1,8 @@
 # ts-generic-collections
 # TypeScript library provides generic, strongly-typed, queryable collections
 
+[![Build Status](https://travis-ci.com/VeritasSoftware/ts-generic-collections.svg?branch=master)](https://travis-ci.com/VeritasSoftware/ts-generic-collections)
+
 ### The generic collections are:
 
 *   List
