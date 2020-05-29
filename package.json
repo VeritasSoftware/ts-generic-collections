@@ -1,6 +1,6 @@
 {
-  "name": "ts-generic-collections",
-  "version": "0.0.1",
+  "name": "ts-generic-collections-linq",
+  "version": "0.0.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
