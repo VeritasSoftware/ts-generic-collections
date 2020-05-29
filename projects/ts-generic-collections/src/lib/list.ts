@@ -270,11 +270,15 @@ export class List<T> implements IList<T> {
     distinct(comparer: IEqualityComparer<T>) : IEnumerable<T> {
         let uniques = new List<T>();
         this.forEach(x => {
-            uniques.forEach(y => {
-                if (!comparer.equals(x, y)) {
+            if (uniques.length > 0) {
+                if (!uniques.any(y => comparer.equals(x, y)))
+                {
                     uniques.add(x);
-                }
-            });
+                }               
+            }
+            else {
+                uniques.add(x);
+            }
         });
 
         return uniques;

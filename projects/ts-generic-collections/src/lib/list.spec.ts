@@ -625,10 +625,10 @@ describe('List', () => {
 
     let distinct = list.distinct(new EqualityComparer());
 
-    expect(distinct.length == 3);
-    expect(distinct.elementAt(0) == 1);
-    expect(distinct.elementAt(1) == 2);
-    expect(distinct.elementAt(2) == 3);
+    expect(distinct.length == 3).toBeTruthy();
+    expect(distinct.elementAt(0) == 1).toBeTruthy();
+    expect(distinct.elementAt(1) == 2).toBeTruthy();
+    expect(distinct.elementAt(2) == 3).toBeTruthy();
   });  
 
   it('skip', () => {

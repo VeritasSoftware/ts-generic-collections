@@ -294,11 +294,15 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     distinct(comparer: IEqualityComparer<KeyValuePair<TKey, TValue>>) : IEnumerable<KeyValuePair<TKey, TValue>> {
         let uniques = new List<KeyValuePair<TKey, TValue>>();
         this.forEach(x => {
-            uniques.forEach(y => {
-                if (!comparer.equals(x, y)) {
+            if (uniques.length > 0) {
+                if (!uniques.any(y => comparer.equals(x, y)))
+                {
                     uniques.add(x);
-                }
-            });
+                }               
+            }
+            else {
+                uniques.add(x);
+            }            
         });
 
         return uniques;
