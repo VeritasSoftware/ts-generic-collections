@@ -5,6 +5,7 @@ export interface IList<T> extends IEnumerable<T> {
     add(item: T) : void;
     addRange(items: T[]) : void;
     remove(predicate: (item:T) => boolean) : void;
+    removeAt(index: number) : void;
     clear() : void;    
 }
 
@@ -38,6 +39,10 @@ export class List<T> implements IList<T> {
         });
 
         this.list = temp;
+    }
+
+    removeAt(index: number) : void {
+        this.list.splice(index, 1);
     }
 
     clear() : void {

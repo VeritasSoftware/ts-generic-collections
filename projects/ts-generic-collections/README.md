@@ -1,4 +1,4 @@
-# ts-generic-collections
+# ts-generic-collections-linq
 # TypeScript library provides generic, strongly-typed, queryable collections
 
 [![Build Status](https://travis-ci.com/VeritasSoftware/ts-generic-collections.svg?branch=master)](https://travis-ci.com/VeritasSoftware/ts-generic-collections)
@@ -7,8 +7,9 @@
 
 *   List
 *   Dictionary
+*   Queue
 
-### All collections implement interface IEnumerable\<T\>
+### List, Dictionary collections implement interface IEnumerable\<T\>
 
 ```typescript
 export interface IEnumerable<T> {
@@ -52,11 +53,18 @@ export interface IList<T> extends IEnumerable<T> {
     add(item: T) : void;
     addRange(items: T[]) : void;
     remove(predicate: (item:T) => boolean) : void;
+    removeAt(index: number) : void;
     clear() : void;
 }
 ```
 
 ### You can create queries like below
+
+Import the library:
+
+```typescript
+import { List, Dictionary } from 'ts-generic-collections-linq'
+```
 
 Below query gets the owners by the sex of their pets.
 
@@ -172,8 +180,17 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
 }
 ```
 
-### You can browse more examples of queries below
+## Queue
 
-[**List**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/list.spec.ts)
+### Queue implements interface IQueue\<T\>
 
-[**Dictionary**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/dictionary.spec.ts)
+```typescript
+export interface IQueue<T> {    
+    clear() : void;
+    contains(item: T) : boolean;
+    dequeue() : T;
+    enqueue(item: T) : void;
+    peek(): T;
+    toArray(): Array<T>; 
+}
+```
