@@ -3,6 +3,10 @@
 
 [![Build Status](https://travis-ci.com/VeritasSoftware/ts-generic-collections.svg?branch=master)](https://travis-ci.com/VeritasSoftware/ts-generic-collections)
 
+![npm](https://img.shields.io/npm/dw/ts-generic-collections-linq)
+
+[Library on NPM](https://www.npmjs.com/package/ts-generic-collections-linq)
+
 ### The generic collections are:
 
 *   List
