@@ -61,7 +61,7 @@ export interface IList<T> extends IEnumerable<T> {
 Import the library (if using npm package):
 
 ```typescript
-import { List, Dictionary } from 'ts-generic-collections-linq/src/public_api'
+import { List, Dictionary } from 'ts-generic-collections-linq'
 ```
 
 Below query gets the owners by the sex of their pets.
