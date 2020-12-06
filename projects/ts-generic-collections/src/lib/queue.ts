@@ -7,6 +7,7 @@ export interface IQueue<T> {
     dequeue() : T;
     enqueue(item: T) : void;
     peek(): T;
+    forEach(predicate: (item: T)=> void) : void;
     toArray(): Array<T>; 
 }
 
@@ -48,6 +49,9 @@ export class Queue<T> implements IQueue<T> {
         }
 
         return null;
+    }
+    forEach(predicate: (item: T)=> void) : void {
+        this.list.forEach(predicate);
     }
     toArray() : Array<T> {
         return this.list.toArray();

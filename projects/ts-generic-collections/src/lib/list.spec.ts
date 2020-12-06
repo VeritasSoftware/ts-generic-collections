@@ -619,6 +619,24 @@ describe('List', () => {
     expect(ownersResult.length === 4).toBeTruthy();
   });  
 
+  it('reverse', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //reverse
+    let result = list.reverse();
+
+    expect(result.elementAt(0).name == "Jane Doe").toBeTruthy();
+    expect(result.elementAt(1).name == "John Doe").toBeTruthy();
+  });  
+
   it('distinct', () => {
     let numbers: number[] = [1, 2, 3, 1, 3];
     let list = new List(numbers);

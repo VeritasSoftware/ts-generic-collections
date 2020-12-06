@@ -95,6 +95,31 @@ describe('Queue', () => {
     expect(queue.toArray().length == 2).toBeTruthy();
   });  
 
+  it('forEach', () => {
+    let queue = new Queue<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+
+    //enqueue
+    queue.enqueue(owner);
+
+    let owner2 = new Owner();
+    owner2.name = "Jane Doe";
+
+    //enqueue
+    queue.enqueue(owner2);
+
+    expect(queue.toArray().length == 2).toBeTruthy();
+
+    let i: number = 0;
+    //forEach
+    queue.forEach(item => {
+        i++;
+    });
+
+    expect(queue.toArray().length == i).toBeTruthy();
+  }); 
     
 });
 

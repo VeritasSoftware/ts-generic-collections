@@ -246,7 +246,7 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
     }
 
     toArray() : Array<KeyValuePair<TKey, TValue>> {
-        return this.list;
+        return this.list.slice();
     }
 
     join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: KeyValuePair<TKey, TValue>)=> TMatch, 
@@ -313,6 +313,10 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
 
          return this;
     }    
+
+    reverse(): IEnumerable<KeyValuePair<TKey, TValue>> {
+        return new List<KeyValuePair<TKey, TValue>>(this.list.slice().reverse());
+    }
 
     skip(no: number) : IDictionary<TKey, TValue> {
         if (no > 0) {

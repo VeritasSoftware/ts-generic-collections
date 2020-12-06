@@ -8,6 +8,7 @@
 *   List
 *   Dictionary
 *   Queue
+*   Stack
 
 ### List, Dictionary collections implement interface IEnumerable\<T\>
 
@@ -30,6 +31,7 @@ export interface IEnumerable<T> {
     orderBy(comparer: IComparer<T>) : IEnumerable<T>;
     distinct(comparer: IEqualityComparer<T>) : IEnumerable<T>;
     union(list: IEnumerable<T>) : IEnumerable<T>;
+    reverse(): IEnumerable<T>;
     skip(no: number) : IEnumerable<T>;
     take(no: number) : IEnumerable<T>;
     sum(predicate: (item: T)=> number) : number;
@@ -191,6 +193,23 @@ export interface IQueue<T> {
     dequeue() : T;
     enqueue(item: T) : void;
     peek(): T;
+    forEach(predicate: (item: T)=> void) : void;
     toArray(): Array<T>; 
+}
+```
+
+## Stack
+
+### Stack implements interface IStack\<T\>
+
+```typescript
+export interface IStack<T> {
+    clear() : void;
+    contains(item: T) : boolean;
+    pop() : T;
+    push(item: T) : void;    
+    peek(): T;
+    forEach(predicate: (item: T)=> void) : void;
+    toArray(): Array<T>;    
 }
 ```

@@ -221,7 +221,7 @@ export class List<T> implements IList<T> {
     }
 
     toArray() : Array<T> {
-        return this.list;
+        return this.list.slice();
     }
 
     join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: T)=> TMatch, 
@@ -270,6 +270,10 @@ export class List<T> implements IList<T> {
         this.addRange(list.toArray());
 
          return this;
+    }
+
+    reverse(): IEnumerable<T> {
+        return new List<T>(this.list.slice().reverse());
     }
 
     distinct(comparer: IEqualityComparer<T>) : IEnumerable<T> {
