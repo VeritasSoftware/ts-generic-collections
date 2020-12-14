@@ -25,7 +25,7 @@ export interface IEnumerable<T> {
     lastOrDefault(predicate: (item: T)=> boolean) : T;
     where(predicate: (item: T)=> boolean) : IEnumerable<T>;
     select<TResult>(predicate: (item: T)=> TResult) : IEnumerable<TResult>;
-    selectMany<TResult>(predicate: (item: T)=> Array<TResult>);
+    selectMany<TResult>(predicate: (item: T)=> Array<TResult>) : IEnumerable<TResult>;
     join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: T)=> TMatch, 
                                     conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult, leftJoin?: boolean) : IEnumerable<TResult>; 
     groupBy(predicate: (item: T) => Array<any>) : IEnumerable<IGroup<T>>; 
