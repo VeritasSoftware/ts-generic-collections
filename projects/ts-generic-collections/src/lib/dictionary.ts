@@ -285,6 +285,14 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         return new List<Group<KeyValuePair<TKey, TValue>>>(g);        
     }
 
+    selectMany<TResult>(predicate: (item: KeyValuePair<TKey, TValue>)=> Array<TResult>) : IEnumerable<TResult> {
+        return this.list.reduce((out, inx) => {
+            var items = predicate(inx);
+            out.addRange(items);
+            return out;
+          }, new List<TResult>(new Array<TResult>()));
+    }
+
     orderBy(comparer: IComparer<KeyValuePair<TKey, TValue>>) : IEnumerable<KeyValuePair<TKey, TValue>> {
         let temp = this.list.sort((x,y) => comparer.compare(x, y));
 

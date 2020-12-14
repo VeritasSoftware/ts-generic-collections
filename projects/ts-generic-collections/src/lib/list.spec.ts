@@ -481,6 +481,59 @@ describe('List', () => {
     expect(ownersByPetSex.toArray()[1].owners.toArray()[0].name == "Jane Doe").toBeTruthy();
   });
   
+  it('selectMany', () => {    
+    let ownerPets = new List<OwnerPets>();
+
+    let owner = new Owner();
+    owner.id = 1;
+    owner.name = "John Doe";
+
+    let pets = new List<Pet>();
+
+    let pet = new Pet();
+    pet.ownerId = 1;
+    pet.name = "Sam";
+    pet.sex = Sex.M;
+
+    pets.add(pet);
+
+    pet = new Pet();
+    pet.ownerId = 1;    
+    pet.name = "Millie";
+    pet.sex = Sex.F;
+
+    pets.add(pet);
+
+    ownerPets.add(new OwnerPets(owner, pets.toArray()));
+
+    owner = new Owner();
+    owner.id = 2;
+    owner.name = "Jane Doe";
+
+    pets = new List<Pet>();
+
+    pet = new Pet();
+    pet.ownerId = 2;
+    pet.name = "Moby";
+    pet.sex = Sex.M;
+
+    pets.add(pet);
+
+    pet = new Pet();
+    pet.ownerId = 2;    
+    pet.name = "Billie";
+    pet.sex = Sex.F;
+
+    pets.add(pet);
+
+    ownerPets.add(new OwnerPets(owner, pets.toArray()));
+
+    //selectMany
+    var result = ownerPets.selectMany(x => x.pets);
+
+    expect(result.length === 4).toBeTruthy();
+  });
+
   it('groupBy multiple fields', () => {
     let owners = new List<Owner>();
 
@@ -753,6 +806,16 @@ class OwnerPet {
         this.owner = owner;
         this.pet = pet;
     }
+}
+
+class OwnerPets {
+  owner: Owner;
+  pets: Pet[];
+
+  constructor(owner: Owner, pets: Pet[]) {
+    this.owner = owner;
+    this.pets = pets;
+}
 }
 
 class OwnersByPetSex {

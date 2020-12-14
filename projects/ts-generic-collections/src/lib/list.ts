@@ -260,6 +260,14 @@ export class List<T> implements IList<T> {
         return new List<Group<T>>(g);        
     }
 
+    selectMany<TResult>(predicate: (item: T)=> Array<TResult>) : IEnumerable<TResult> {
+        return this.list.reduce((out, inx) => {
+            var items = predicate(inx);
+            out.addRange(items);
+            return out;
+          }, new List<TResult>(new Array<TResult>()));
+    }
+
     orderBy(comparer: IComparer<T>) : IEnumerable<T> {
         let temp = this.list.sort((x,y) => comparer.compare(x, y));
 

@@ -32,6 +32,7 @@ export interface IEnumerable<T> {
     join<TOuter, TMatch, TResult>(outer: IEnumerable<TOuter>, conditionInner: (item: T)=> TMatch, 
                                     conditionOuter: (item: TOuter)=> TMatch, select: (x: T, y:TOuter)=> TResult, leftJoin?: boolean) : IEnumerable<TResult>; 
     groupBy(predicate: (item: T) => Array<any>) : IEnumerable<IGroup<T>>;
+    selectMany<TResult>(predicate: (item: T)=> Array<TResult>);
     orderBy(comparer: IComparer<T>) : IEnumerable<T>;
     distinct(comparer: IEqualityComparer<T>) : IEnumerable<T>;
     union(list: IEnumerable<T>) : IEnumerable<T>;
