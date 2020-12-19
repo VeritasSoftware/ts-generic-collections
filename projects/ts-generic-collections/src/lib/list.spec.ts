@@ -84,6 +84,24 @@ describe('List', () => {
     expect(list.length === 0).toBeTruthy();
   });
 
+  it('removeAt', () => {
+    let list = new List<Owner>();
+
+    let owner = new Owner();
+    owner.name = "John Doe";
+    list.add(owner);
+
+    owner = new Owner();
+    owner.name = "Jane Doe";
+    list.add(owner);
+
+    //removeAt
+    list.removeAt(0);
+
+    expect(list.length === 1).toBeTruthy();
+    expect(list.elementAt(0).name === 'Jane Doe').toBeTruthy();
+  });
+
   it('elementAt', () => {
     let list = new List<Owner>();
 

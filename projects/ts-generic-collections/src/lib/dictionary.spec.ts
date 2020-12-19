@@ -94,8 +94,38 @@ describe('Dictionary', () => {
 
     dictionary.remove(x => x.key.country == Country.Germany);
 
-    expect(dictionary.length == 1);    
+    expect(dictionary.length == 1).toBeTruthy();    
   });
+
+  it('removeAt', () => {
+    let dictionary = new Dictionary<Car, IList<Feature>>();
+
+    let car = new Car(1, "Mercedez", "S 400", Country.Germany);
+    let car2 = new Car(2, "Jaguar", "J 500", Country.England);
+
+    let features = new List<Feature>();
+
+    let feature = new Feature(1, "2 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car, features);
+
+    features = new List<Feature>();
+
+    feature = new Feature(2, "4 - Door Sedan");
+
+    features.add(feature);
+
+    dictionary.add(car2, features);
+
+    expect(dictionary.length == 2);
+
+    dictionary.removeAt(1);
+
+    expect(dictionary.length == 1).toBeTruthy(); 
+    expect(dictionary.elementAt(0).key.name === 'Mercedez').toBeTruthy();    
+  });  
 
   it('where', () => {
     let dictionary = new Dictionary<Car, IList<Feature>>();

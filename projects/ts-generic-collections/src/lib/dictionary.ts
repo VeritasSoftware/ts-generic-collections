@@ -6,6 +6,7 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
     add(key: TKey, value: TValue) : void;
     addRange(items: KeyValuePair<TKey, TValue>[]) : void;
     remove(predicate: (item:KeyValuePair<TKey, TValue>) => boolean) : void;
+    removeAt(index: number) : void;
     clear() : void;
 
     containsKey(key: TKey) : boolean;
@@ -37,6 +38,10 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
 
     addRange(items: KeyValuePair<TKey, TValue>[]) : void {
         items.forEach(x => this.add(x.key, x.value));
+    }
+
+    removeAt(index: number) : void {
+        this.list.splice(index, 1);
     }
 
     clear() : void {
