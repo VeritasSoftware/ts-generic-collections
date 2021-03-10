@@ -249,10 +249,11 @@ export class List<T> implements IList<T> {
           groups[group] = groups[group] || [];
           groups[group].push(o);
         });
-        let g = Object.keys(groups).map(function (group) {                
-            let a = group.substr(1, group.length - 2);
+        let g = Object.keys(groups).map(function (group) {             
+            let a = group.substr(1, group.length - 2);            
 
-            let grp= new Group<T>(a.split(','), groups[group]);
+            let grp= new Group<T>(new List(a.split(',')).select(x => x.replace(/^(")?(.*?)(")?$/ig, "$2")).toArray(), 
+                                    groups[group]);
 
             return grp;
         });
