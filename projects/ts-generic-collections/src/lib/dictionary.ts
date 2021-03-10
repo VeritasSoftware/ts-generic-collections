@@ -281,8 +281,9 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         });
         let g = Object.keys(groups).map(function (group) {                
             let a = group.substr(1, group.length - 2);
-
-            let grp= new Group<KeyValuePair<TKey, TValue>>(a.split(','), groups[group]);
+            
+            let grp= new Group<KeyValuePair<TKey, TValue>>(new List(a.split(',')).select(x => x.replace(/^(")?(.*?)(")?$/ig, "$2")).toArray(), 
+                                    groups[group]);            
 
             return grp;
         });
