@@ -1,12 +1,10 @@
 # ts-generic-collections-linq
 # TypeScript library provides generic, strongly-typed, queryable collections
 
-[![Build Status](https://travis-ci.com/VeritasSoftware/ts-generic-collections.svg?branch=master)](https://travis-ci.com/VeritasSoftware/ts-generic-collections)
-
 ### The generic collections are:
 
 *   List
-*   Dictionary
+*   Dictionary, SortedDictionary
 *   Queue, RandomizedQueue
 *   Stack
 
@@ -168,7 +166,7 @@ class OwnersByPetSex {
 
 ## Dictionary
 
-### Dictionary implements interface IDictionary<TKey, TValue>
+### Dictionary, SortedDictionary implement IDictionary<TKey, TValue>
 
 ```typescript
 export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey, TValue>> {
@@ -184,9 +182,14 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
 }
 ```
 
+### SortedDictionary
+
+* sorted by Key
+* uses **IComparer\<T\>** to provide the sorted collection.
+
 ## Queue
 
-### Queue implements interface IQueue\<T\>
+### Queue, RandomizedQueue implement interface IQueue\<T\>
 
 ```typescript
 export interface IQueue<T> {    

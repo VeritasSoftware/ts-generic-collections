@@ -12,6 +12,11 @@ export class Group<T> implements IGroup<T> {
 }
 
 export var objCompare = function (obj1, obj2) {
+
+	if ((typeof obj1 !== 'object' && typeof obj1 !== 'function') && (typeof obj2 !== 'object' && typeof obj2 !== 'function')) {
+		return obj1 === obj2;
+	}
+
 	//Loop through properties in object 1
 	for (var p in obj1) {
 		//Check property exists on both objects

@@ -10,7 +10,7 @@
 ### The generic collections are:
 
 *   List
-*   Dictionary
+*   Dictionary, SortedDictionary
 *   Queue, RandomizedQueue
 *   Stack
 
@@ -172,7 +172,7 @@ class OwnersByPetSex {
 
 ## Dictionary
 
-### Dictionary implements interface IDictionary<TKey, TValue>
+### Dictionary, SortedDictionary implement IDictionary<TKey, TValue>
 
 ```typescript
 export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey, TValue>> {
@@ -188,9 +188,14 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
 }
 ```
 
+### SortedDictionary
+
+* sorted by Key
+* uses **IComparer\<T\>** to provide the sorted collection.
+
 ## Queue
 
-### Queue implements interface IQueue\<T\>
+### Queue, RandomizedQueue implement interface IQueue\<T\>
 
 ```typescript
 export interface IQueue<T> {    
@@ -233,7 +238,11 @@ export interface IStack<T> {
 
 [**Dictionary**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/dictionary.spec.ts)
 
+[**SortedDictionary**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/sorted.dictionary.spec.ts)
+
 [**Queue**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/queue.spec.ts)
+
+[**RandomizedQueue**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/randomized.queue.spec.ts)
 
 [**Stack**](https://github.com/VeritasSoftware/ts-generic-collections/blob/master/projects/ts-generic-collections/src/lib/stack.spec.ts)
 
