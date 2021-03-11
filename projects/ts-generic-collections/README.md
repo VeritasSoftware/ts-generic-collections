@@ -7,7 +7,7 @@
 
 *   List
 *   Dictionary
-*   Queue
+*   Queue, RandomizedQueue
 *   Stack
 
 ### List, Dictionary collections implement interface IEnumerable\<T\>
@@ -199,6 +199,13 @@ export interface IQueue<T> {
     toArray(): Array<T>; 
 }
 ```
+
+### RandomizedQueue
+
+* enqueue to the end.
+* dequeue a random item.
+* peek (but not dequeue) a random item.
+* if you peek and then dequeue, the peeked item is dequeued. 
 
 ## Stack
 
