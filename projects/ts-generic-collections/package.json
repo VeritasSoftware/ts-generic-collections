@@ -1,6 +1,6 @@
 {
   "name": "ts-generic-collections-linq",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "TypeScript library provides strongly-typed, queryable collections.",
   "author": {
     "name": "VeritasSoftware", "email": "veritas.software.au@gmail.com"

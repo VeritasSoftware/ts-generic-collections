@@ -3,10 +3,10 @@ import { List } from './list';
 import { Group, objCompare, ITEM_NOT_FOUND_MSG, MULTIPLE_INSTANCES_FOUND_MSG } from './common';
 import { IDictionary, Dictionary, KeyValuePair } from './dictionary';
 
-class StringComparer<TKey, TValue> implements IComparer<KeyValuePair<TKey, TValue>> {
-    compare(x: KeyValuePair<TKey, TValue>, y: KeyValuePair<TKey, TValue>) : number {
-        var xKey = x.key as unknown as string;
-        var yKey = y.key as unknown as string;
+class StringComparer<TKey> implements IComparer<TKey> {
+    compare(x: TKey, y: TKey) : number {
+        var xKey = x as unknown as string;
+        var yKey = y as unknown as string;
 
         if (xKey > yKey) {
             return 1;            
@@ -20,10 +20,10 @@ class StringComparer<TKey, TValue> implements IComparer<KeyValuePair<TKey, TValu
     }
 }
 
-class NumberComparer<TKey, TValue> implements IComparer<KeyValuePair<TKey, TValue>> {
-    compare(x: KeyValuePair<TKey, TValue>, y: KeyValuePair<TKey, TValue>) : number {
-        var xKey = x.key as unknown as number;
-        var yKey = y.key as unknown as number;
+class NumberComparer<TKey> implements IComparer<TKey> {
+    compare(x: TKey, y: TKey) : number {
+        var xKey = x as unknown as number;
+        var yKey = y as unknown as number;
 
         if (xKey > yKey) {
             return 1;            
@@ -40,9 +40,9 @@ class NumberComparer<TKey, TValue> implements IComparer<KeyValuePair<TKey, TValu
 export class SortedDictionary<TKey, TValue> implements IDictionary<TKey, TValue>
 {
     private list: Array<KeyValuePair<TKey, TValue>> = new Array<KeyValuePair<TKey, TValue>>();
-    private comparer: IComparer<KeyValuePair<TKey, TValue>>;
+    private comparer: IComparer<TKey>;
 
-    constructor(comparer: IComparer<KeyValuePair<TKey, TValue>> = null, list: Array<KeyValuePair<TKey, TValue>> = null) {
+    constructor(comparer: IComparer<TKey>, list: Array<KeyValuePair<TKey, TValue>> = null) {
         if (list) {
             this.list = list;            
         }        
@@ -52,20 +52,20 @@ export class SortedDictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         if (this.list && this.list.length > 0)
         {
             if (this.comparer) {
-                this.orderBy(this.comparer);
+                this.list.sort((x,y) => this.comparer.compare(x.key, y.key));
             }
             else {
                 var value = this.list[0].key;
     
                 if (typeof value === "string") {
-                    this.comparer = new StringComparer<TKey, TValue>();
+                    this.comparer = new StringComparer<TKey>();
 
-                    this.list = this.orderBy(this.comparer).toArray();
+                    this.list = this.list.sort((x,y) => this.comparer.compare(x.key, y.key));
                 }
                 else if (typeof value === "number") {
-                    this.comparer = new NumberComparer<TKey, TValue>();
+                    this.comparer = new NumberComparer<TKey>();
 
-                    this.list = this.orderBy(this.comparer).toArray();
+                    this.list = this.list.sort((x,y) => this.comparer.compare(x.key, y.key));
                 }
             }
         }
@@ -83,7 +83,7 @@ export class SortedDictionary<TKey, TValue> implements IDictionary<TKey, TValue>
         this.list.push(pair);
 
         if (this.comparer) {
-            this.list = this.orderBy(this.comparer).toArray();
+            this.list = this.list.sort((x,y) => this.comparer.compare(x.key, y.key));
         }
     }
 

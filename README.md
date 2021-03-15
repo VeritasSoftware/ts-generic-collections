@@ -191,7 +191,7 @@ export interface IDictionary<TKey, TValue> extends IEnumerable<KeyValuePair<TKey
 ### SortedDictionary
 
 * sorted by Key
-* uses **IComparer\<T\>** to provide the sorted collection.
+* uses **IComparer\<TKey\>** to provide the sorted collection.
 
 ## Queue
 

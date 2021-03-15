@@ -29,7 +29,7 @@ describe('Sorted Dictionary', () => {
   });
 
   it('add', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
 
@@ -48,7 +48,7 @@ describe('Sorted Dictionary', () => {
   });
 
   it('add fail', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
 
@@ -71,7 +71,7 @@ describe('Sorted Dictionary', () => {
   });  
 
   it('remove', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Jaguar", "J 500", Country.England);
@@ -100,7 +100,7 @@ describe('Sorted Dictionary', () => {
   });
 
   it('removeAt', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Jaguar", "J 500", Country.England);
@@ -126,11 +126,11 @@ describe('Sorted Dictionary', () => {
     dictionary.removeAt(1);
 
     expect(dictionary.length == 1).toBeTruthy(); 
-    expect(dictionary.elementAt(0).key.name === 'Mercedez').toBeTruthy();    
+    expect(dictionary.elementAt(0).key.name === 'Jaguar').toBeTruthy();    
   });  
 
   it('where', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Jaguar", "J 500", Country.England);
@@ -157,7 +157,7 @@ describe('Sorted Dictionary', () => {
   });  
 
   it('singleOrDefault', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Jaguar", "J 500", Country.England);
@@ -184,7 +184,7 @@ describe('Sorted Dictionary', () => {
   });
 
   it('firstOrDefault', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Mercedez", "S 500", Country.Germany);
@@ -211,7 +211,7 @@ describe('Sorted Dictionary', () => {
   });  
 
   it('singleOrDefault fail', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Mercedez", "S 500", Country.Germany);
@@ -245,7 +245,7 @@ describe('Sorted Dictionary', () => {
   });
 
   it('groupBy', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Jaguar", "J 500", Country.England);
@@ -273,7 +273,7 @@ describe('Sorted Dictionary', () => {
   });
   
   it('groupBy multiple fields', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany, true);
     let car2 = new Car(2, "Jaguar", "J 500", Country.England, true);
@@ -333,7 +333,7 @@ describe('Sorted Dictionary', () => {
   });  
   
   it('orderBy', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Jaguar", "J 500", Country.England);
@@ -361,7 +361,7 @@ describe('Sorted Dictionary', () => {
   });
 
   it('union', () => {
-    let dictionary = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     let car = new Car(1, "Mercedez", "S 400", Country.Germany);
     let car2 = new Car(2, "Jaguar", "J 500", Country.England);
@@ -383,7 +383,7 @@ describe('Sorted Dictionary', () => {
     dictionary.add(car2, features);
 
 
-    let dictionary2 = new SortedDictionary<Car, IList<Feature>>();
+    let dictionary2 = new SortedDictionary<Car, IList<Feature>>(new CarComparer());
 
     car = new Car(1, "Volvo", "V 400", Country.Germany);
     car2 = new Car(2, "Ford", "F 500", Country.US);
@@ -450,4 +450,18 @@ class ComparerByCarName implements IComparer<KeyValuePair<Car, IList<Feature>>> 
 
         return -1;        
     }
+}
+
+class CarComparer implements IComparer<Car> {
+  compare(x: Car, y: Car) : number {
+    if (x.name > y.name) {            
+        return 1;
+    }
+
+    if (x.name == y.name) {
+      return 0;
+    }
+
+    return -1;        
+  }
 }
